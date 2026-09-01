@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>バスモニター（茜）</title>
+
 <style>
   body {
     font-family: "Rounded Mplus 1c", sans-serif;
@@ -36,53 +37,49 @@
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
   }
 
-  #refreshBtn:active {
-    opacity: 0.7;
+  #bus {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2列タイル */
+    gap: 12px;
   }
 
   .card {
     background: #fff;
     border-radius: 12px;
     padding: 16px;
-    margin-bottom: 12px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    height: 160px; /* 正方形っぽく */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
-  /* 上り（上2つ）→ 青 */
+  /* 上り（上4つ）→ 青 */
   .card-up {
     border-left: 6px solid #8ea6ff;
   }
 
-  /* 下り（下3つ）→ オレンジ */
+  /* 下り（下4つ）→ オレンジ */
   .card-down {
     border-left: 6px solid #ffb38e;
   }
 
   .title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     color: #333;
-    margin-bottom: 6px;
   }
 
   .time {
-    font-size: 20px;
-    color: #444;
+    font-size: 18px;
     font-weight: bold;
-  }
-
-  .link {
-    margin-top: 8px;
-    font-size: 14px;
+    color: #444;
   }
 
   .link a {
+    font-size: 14px;
     color: #6b7cff;
     text-decoration: none;
-  }
-
-  .link a:hover {
-    text-decoration: underline;
   }
 </style>
 </head>
@@ -96,6 +93,9 @@
 <div id="bus"></div>
 
 <script>
+/* 並び順を強制するマップ（1→8→2→7→3→5→4→6） */
+const orderMap = [0, 7, 1, 6, 2, 4, 3, 5];
+
 /* タイトル完全一致リンク */
 const routeLinks = {
   "【国際興業バス：赤31】小茂根 → 高円寺":
@@ -105,13 +105,22 @@ const routeLinks = {
     "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020128&arrival-busstop=00020420",
 
   "【国際興業バス：赤31】野方二丁目 → 武蔵野病院/小茂根":
-    "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020422&arrival-busstop=00020128",
+    "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020422&arrival-busstop=00020127",
+
+  "【国際興業バス：赤31】高円寺 → 武蔵野病院/小茂根":
+    "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020420&arrival-busstop=00020127",
 
   "【都営バス：王78】野方二丁目 → 王子駅方面(武蔵野病院/小茂根)":
     "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1203&poleno=2&ln=ja",
 
   "【都営バス：王78】高円寺 → 王子駅方面(武蔵野病院/小茂根)":
-    "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=478&poleno=2&ln=ja"
+    "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=478&poleno=2&ln=ja",
+
+  "【都営バス：王78】武蔵野病院 → 新宿駅方面(高円寺)":
+    "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1517&poleno=1&ln=ja",
+
+  "【都営バス：王78】小茂根 → 新宿駅(高円寺)":
+    "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=555&poleno=1&ln=ja"
 };
 
 async function loadBus() {
@@ -128,12 +137,15 @@ async function loadBus() {
   const box = document.getElementById("bus");
   box.innerHTML = "";
 
-  data.data.forEach((line, index) => {
+  /* 並び順を orderMap に従って並び替え */
+  const sorted = orderMap.map(i => data.data[i]);
+
+  sorted.forEach((line, index) => {
     const div = document.createElement("div");
     const [title, time] = line.split(":");
 
-    /* 上2つ → 上り（青）、下3つ → 下り（オレンジ） */
-    if (index < 2) {
+    /* 上4つ → 青、下4つ → オレンジ */
+    if (index < 4) {
       div.className = "card card-up";
     } else {
       div.className = "card card-down";
