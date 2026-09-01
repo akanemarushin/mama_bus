@@ -13,7 +13,14 @@
   h1 {
     text-align: center;
     color: #555;
+    margin-bottom: 10px;
+  }
+
+  #timestamp {
+    text-align: center;
+    color: #777;
     margin-bottom: 20px;
+    font-size: 14px;
   }
 
   .card {
@@ -42,18 +49,24 @@
 <body>
 <h1>🚌 バスモニター（茜）</h1>
 
+<div id="timestamp"></div>
 <div id="bus"></div>
 
 <script>
 async function loadBus() {
-  const url = "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/latest.json";
-  const res = await fetch(url);
+  const url = "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/latest.json?v=" + Date.now();
+  const res = await fetch(url, { cache: "no-store" });
   const data = await res.json();
 
+  // ★ タイムスタンプ表示
+  document.getElementById("timestamp").textContent =
+    "更新時刻: " + new Date(data.timestamp).toLocaleString("ja-JP");
+
+  // ★ バス情報表示
   const box = document.getElementById("bus");
   box.innerHTML = "";
 
-  data.forEach(line => {
+  data.data.forEach(line => {
     const div = document.createElement("div");
     div.className = "card";
 
