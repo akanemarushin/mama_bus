@@ -38,18 +38,18 @@
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
   }
 
-  /* ★ スマホ優先（まずスマホの1列・小さめタイル） */
+  /* ★ スマホ優先：1列＋タイル大きめ */
   #bus {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
+    grid-template-columns: 1fr; /* スマホは1列固定 */
+    gap: 12px;
   }
 
   .card {
     background: #fff;
-    border-radius: 10px;
-    padding: 10px;
-    height: 110px;              /* ★ スマホで4つ収まる高さ */
+    border-radius: 12px;
+    padding: 16px;
+    height: 170px;              /* ★ タイルを大きく */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -65,55 +65,55 @@
   }
 
   .from {
-    font-size: 17px;            /* ★ スマホ基準 */
+    font-size: 22px;            /* ★ 左側のバス停名を大きく */
     font-weight: bold;
     color: #222;
     line-height: 1.2;
   }
 
   .to {
-    font-size: 13px;
+    font-size: 16px;
     color: #555;
   }
 
   .time {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: bold;
     color: #444;
   }
 
   .link a {
-    font-size: 12px;
+    font-size: 14px;
     color: #6b7cff;
     text-decoration: none;
   }
 
-  /* ★ PC・タブレット用（スマホより少し広くする） */
+  /* ★ PC・タブレット用（自動で2列に） */
   @media (min-width: 700px) {
     #bus {
       grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+      gap: 16px;
     }
 
     .card {
-      height: 150px;            /* PCでは余裕を持たせる */
-      padding: 14px;
+      height: 190px;            /* PCではさらに余裕を持たせる */
+      padding: 20px;
     }
 
     .from {
-      font-size: 20px;
+      font-size: 24px;
     }
 
     .to {
-      font-size: 15px;
-    }
-
-    .time {
       font-size: 18px;
     }
 
+    .time {
+      font-size: 20px;
+    }
+
     .link a {
-      font-size: 14px;
+      font-size: 15px;
     }
   }
 </style>
