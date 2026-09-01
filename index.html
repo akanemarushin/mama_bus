@@ -23,6 +23,23 @@
     font-size: 14px;
   }
 
+  #refreshBtn {
+    display: block;
+    margin: 0 auto 20px auto;
+    padding: 10px 20px;
+    background: #8ea6ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  }
+
+  #refreshBtn:active {
+    opacity: 0.7;
+  }
+
   .card {
     background: #fff;
     border-radius: 12px;
@@ -40,8 +57,23 @@
   }
 
   .time {
-    font-size: 16px;
-    color: #666;
+    font-size: 20px;   /* ← バス情報なしを大きくした */
+    color: #444;
+    font-weight: bold;
+  }
+
+  .link {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+
+  .link a {
+    color: #6b7cff;
+    text-decoration: none;
+  }
+
+  .link a:hover {
+    text-decoration: underline;
   }
 </style>
 </head>
@@ -49,10 +81,20 @@
 <body>
 <h1>🚌 バスモニター（茜）</h1>
 
+<button id="refreshBtn">最新の情報に更新</button>
+
 <div id="timestamp"></div>
 <div id="bus"></div>
 
 <script>
+const routeLinks = {
+  "小茂根 → 高円寺": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020127&arrival-busstop=00020420",
+  "武蔵野病院 → 高円寺": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020128&arrival-busstop=00020420",
+  "野方二丁目 → 武蔵野病院": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020422&arrival-busstop=00020128",
+  "野方二丁目 → 王子駅": "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1203&poleno=2&ln=ja",
+  "高円寺 → 王子駅": "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=478&poleno=2&ln=ja"
+};
+
 async function loadBus() {
   const url = "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/latest.json?v=" + Date.now();
   const res = await fetch(url, { cache: "no-store" });
@@ -75,11 +117,14 @@ async function loadBus() {
     div.innerHTML = `
       <div class="title">${title}</div>
       <div class="time">${time}</div>
+      <div class="link"><a href="${routeLinks[title]}" target="_blank">▶ この路線の詳細を見る</a></div>
     `;
 
     box.appendChild(div);
   });
 }
+
+document.getElementById("refreshBtn").onclick = loadBus;
 
 loadBus();
 setInterval(loadBus, 60000);
