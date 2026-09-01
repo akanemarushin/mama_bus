@@ -96,36 +96,29 @@
 <div id="bus"></div>
 
 <script>
-/* 路線リンク（タイトル完全一致ではなく部分一致で判定する） */
-function getRouteLink(title) {
-  // 国際興業バス（赤31）
-  if (title.includes("国際興業バス")) {
-    if (title.includes("小茂根")) {
-      return "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020127&arrival-busstop=00020420";
-    }
-    if (title.includes("武蔵野病院")) {
-      return "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020128&arrival-busstop=00020420";
-    }
-    if (title.includes("野方二丁目")) {
-      return "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020422&arrival-busstop=00020128";
-    }
-  }
+/* タイトル完全一致でリンクを返す */
+const routeLinks = {
+  "【国際興業バス：赤31】小茂根 → 高円寺":
+    "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020127&arrival-busstop=00020420",
 
-  // 都営バス（王78）
-  if (title.includes("都営バス")) {
-    if (title.includes("野方二丁目")) {
-      return "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1203&poleno=2&ln=ja";
-    }
-    if (title.includes("高円寺")) {
-      return "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=478&poleno=2&ln=ja";
-    }
-  }
+  "【国際興業バス：赤31】武蔵野病院 → 高円寺":
+    "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020128&arrival-busstop=00020420",
 
-  return "#"; // 万が一一致しない場合
-}
+  "【国際興業バス：赤31】野方二丁目 → 武蔵野病院/小茂根":
+    "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020422&arrival-busstop=00020128",
+
+  "【都営バス：王78】野方二丁目 → 王子駅方面(武蔵野病院/小茂根)":
+    "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1203&poleno=2&ln=ja",
+
+  "【都営バス：王78】高円寺 → 王子駅方面(武蔵野病院/小茂根)":
+    "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=478&poleno=2&ln=ja"
+};
 
 async function loadBus() {
-  const url = "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/latest.json?v=" + Date.now();
+  const url =
+    "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/latest.json?v=" +
+    Date.now();
+
   const res = await fetch(url, { cache: "no-store" });
   const data = await res.json();
 
@@ -146,7 +139,7 @@ async function loadBus() {
       div.className = "card card-toei";
     }
 
-    const link = getRouteLink(title);
+    const link = routeLinks[title] || "#";
 
     div.innerHTML = `
       <div class="title">${title}</div>
