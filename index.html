@@ -139,7 +139,7 @@ const routeLinks = {
 
 async function loadBus() {
   const url =
-    "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.amazonaws.com/latest.json?v=" +
+    "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/latest.json?v=" +
     Date.now();
 
   const res = await fetch(url, { cache: "no-store" });
