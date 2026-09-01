@@ -46,7 +46,16 @@
     padding: 16px;
     margin-bottom: 12px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+
+  /* 上2つ（NAVITIME） */
+  .card-top {
     border-left: 6px solid #8ea6ff;
+  }
+
+  /* 下3つ（都バス） */
+  .card-bottom {
+    border-left: 6px solid #ffb38e;
   }
 
   .title {
@@ -57,7 +66,7 @@
   }
 
   .time {
-    font-size: 20px;   /* ← バス情報なしを大きくした */
+    font-size: 20px;
     color: #444;
     font-weight: bold;
   }
@@ -90,9 +99,9 @@
 const routeLinks = {
   "小茂根 → 高円寺": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020127&arrival-busstop=00020420",
   "武蔵野病院 → 高円寺": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020128&arrival-busstop=00020420",
-  "野方二丁目 → 武蔵野病院": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020422&arrival-busstop=00020128",
-  "野方二丁目 → 王子駅": "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1203&poleno=2&ln=ja",
-  "高円寺 → 王子駅": "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=478&poleno=2&ln=ja"
+  "野方二丁目 → 武蔵野病院/小茂根": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020422&arrival-busstop=00020128",
+  "野方二丁目 → 王子駅方面（武蔵野病院/小茂根)": "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1203&poleno=2&ln=ja",
+  "高円寺 → 王子駅方面（武蔵野病院/小茂根)": "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=478&poleno=2&ln=ja"
 };
 
 async function loadBus() {
@@ -100,17 +109,21 @@ async function loadBus() {
   const res = await fetch(url, { cache: "no-store" });
   const data = await res.json();
 
-  // ★ タイムスタンプ表示
   document.getElementById("timestamp").textContent =
     "更新時刻: " + new Date(data.timestamp).toLocaleString("ja-JP");
 
-  // ★ バス情報表示
   const box = document.getElementById("bus");
   box.innerHTML = "";
 
-  data.data.forEach(line => {
+  data.data.forEach((line, index) => {
     const div = document.createElement("div");
-    div.className = "card";
+
+    // 上2つ → 青系、下3つ → オレンジ系
+    if (index < 2) {
+      div.className = "card card-top";
+    } else {
+      div.className = "card card-bottom";
+    }
 
     const [title, time] = line.split(":");
 
