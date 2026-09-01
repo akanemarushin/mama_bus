@@ -37,16 +37,34 @@
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
   }
 
-  /* タイルレイアウト（スマホ対応） */
+  /* PC・タブレット：2列 */
   #bus {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
 
+  /* スマホ：1列で4タイルが収まる高さに */
   @media (max-width: 600px) {
     #bus {
-      grid-template-columns: 1fr; /* スマホは1列 */
+      grid-template-columns: 1fr;
+    }
+    .card {
+      height: 115px;       /* ★スマホで4つ収まる高さ */
+      padding: 12px;
+      gap: 4px;
+    }
+    .from {
+      font-size: 18px;     /* 左側のバス停名 */
+    }
+    .to {
+      font-size: 14px;     /* 右側のバス停名 */
+    }
+    .time {
+      font-size: 16px;     /* 時刻 */
+    }
+    .link a {
+      font-size: 12px;     /* リンク */
     }
   }
 
@@ -70,7 +88,6 @@
     border-left: 6px solid #ffb38e;
   }
 
-  /* 左側のバス停名を大きく */
   .from {
     font-size: 20px;
     font-weight: bold;
@@ -78,7 +95,6 @@
     line-height: 1.3;
   }
 
-  /* 右側のバス停名は少し小さく */
   .to {
     font-size: 15px;
     color: #555;
