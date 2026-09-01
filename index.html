@@ -1,78 +1,24 @@
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<div id="bus"></div>
 
-<h1>バス接近情報まとめ</h1>
+<script>
+async function loadBus() {
+  const url = "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/latest.json";
+  const res = await fetch(url);
+  const data = await res.json();
 
-<div class="container">
+  const box = document.getElementById("bus");
+  box.innerHTML = "";
 
-  <div class="card">
-    <h2>小茂根 → 高円寺</h2>
-    <a href="https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020127&arrival-busstop=00020420" class="btn">
-      接近情報を見る
-    </a>
-  </div>
+  data.forEach(line => {
+    const div = document.createElement("div");
+    div.textContent = line;
+    box.appendChild(div);
+  });
+}
 
-  <div class="card">
-    <h2>武蔵野病院 → 高円寺</h2>
-    <a href="https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020128&arrival-busstop=00020420" class="btn">
-      接近情報を見る
-    </a>
-  </div>
+// 初回読み込み
+loadBus();
 
-  <div class="card">
-    <h2>野方二丁目 → 武蔵野病院</h2>
-    <a href="https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020422&arrival-busstop=00020128" class="btn">
-      接近情報を見る
-    </a>
-  </div>
-
-  <div class="card">
-    <h2>野方二丁目 → 王子駅</h2>
-    <a href="https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1203&poleno=2&ln=ja" class="btn">
-      接近情報を見る
-    </a>
-  </div>
-
-  <div class="card">
-    <h2>高円寺 → 王子駅</h2>
-    <a href="https://tobus.jp/sp/blsys/stop?routecode=148&stopid=478&poleno=2&ln=ja" class="btn">
-      接近情報を見る
-    </a>
-  </div>
-
-</div>
-
-<style>
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    padding: 16px;
-    background: #fafafa;
-  }
-
-  h1 {
-    text-align: center;
-    margin-bottom: 24px;
-  }
-
-  .card {
-    background: #ffffff;
-    padding: 16px;
-    margin-bottom: 18px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  }
-
-  .btn {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 12px 16px;
-    background: #007aff;
-    color: white;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 16px;
-  }
-
-  .btn:active {
-    opacity: 0.7;
-  }
-</style>
+// 1分ごとに更新
+setInterval(loadBus, 60000);
+</script>
