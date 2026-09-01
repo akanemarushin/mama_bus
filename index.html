@@ -1,3 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>バスモニター（茜）</title>
+<style>
+  body {
+    font-family: "Rounded Mplus 1c", sans-serif;
+    background: #f7f7ff;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    border-left: 6px solid #8ea6ff;
+  }
+
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 6px;
+  }
+
+  .time {
+    font-size: 16px;
+    color: #666;
+  }
+</style>
+</head>
+
+<body>
+<h1>🚌 バスモニター（茜）</h1>
+
 <div id="bus"></div>
 
 <script>
@@ -11,14 +55,22 @@ async function loadBus() {
 
   data.forEach(line => {
     const div = document.createElement("div");
-    div.textContent = line;
+    div.className = "card";
+
+    const [title, time] = line.split(":");
+
+    div.innerHTML = `
+      <div class="title">${title}</div>
+      <div class="time">${time}</div>
+    `;
+
     box.appendChild(div);
   });
 }
 
-// 初回読み込み
 loadBus();
-
-// 1分ごとに更新
 setInterval(loadBus, 60000);
 </script>
+
+</body>
+</html>
