@@ -8,51 +8,52 @@
   body {
     font-family: "Rounded Mplus 1c", sans-serif;
     background: #f7f7ff;
-    padding: 20px;
+    padding: 10px;
   }
 
   h1 {
     text-align: center;
     color: #555;
     margin-bottom: 10px;
+    font-size: 20px;
   }
 
   #timestamp {
     text-align: center;
     color: #777;
-    margin-bottom: 20px;
-    font-size: 14px;
+    margin-bottom: 10px;
+    font-size: 12px;
   }
 
   #refreshBtn {
     display: block;
-    margin: 0 auto 20px auto;
-    padding: 10px 20px;
+    margin: 0 auto 15px auto;
+    padding: 8px 16px;
     background: #8ea6ff;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
   }
 
-  /* ★ スマホ優先のタイル設定（まずスマホを基準にする） */
+  /* ★ スマホ優先（まずスマホの1列・小さめタイル） */
   #bus {
     display: grid;
-    grid-template-columns: 1fr; /* スマホは1列 */
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .card {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 10px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
     height: 110px;              /* ★ スマホで4つ収まる高さ */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
   }
 
   .card-up {
@@ -64,19 +65,19 @@
   }
 
   .from {
-    font-size: 18px;            /* ★ スマホ基準 */
+    font-size: 17px;            /* ★ スマホ基準 */
     font-weight: bold;
     color: #222;
     line-height: 1.2;
   }
 
   .to {
-    font-size: 14px;
+    font-size: 13px;
     color: #555;
   }
 
   .time {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     color: #444;
   }
@@ -87,15 +88,15 @@
     text-decoration: none;
   }
 
-  /* ★ PC・タブレット用の上書き（スマホより少し広くする） */
+  /* ★ PC・タブレット用（スマホより少し広くする） */
   @media (min-width: 700px) {
     #bus {
-      grid-template-columns: repeat(2, 1fr); /* PCは2列 */
+      grid-template-columns: repeat(2, 1fr);
       gap: 14px;
     }
 
     .card {
-      height: 140px;            /* PCでは少し余裕を持たせる */
+      height: 150px;            /* PCでは余裕を持たせる */
       padding: 14px;
     }
 
