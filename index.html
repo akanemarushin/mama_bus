@@ -37,10 +37,17 @@
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
   }
 
+  /* タイルレイアウト（スマホ対応） */
   #bus {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2列タイル */
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+  }
+
+  @media (max-width: 600px) {
+    #bus {
+      grid-template-columns: 1fr; /* スマホは1列 */
+    }
   }
 
   .card {
@@ -48,10 +55,9 @@
     border-radius: 12px;
     padding: 16px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    height: 160px; /* 正方形っぽく */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 8px;
   }
 
   /* 上り（上4つ）→ 青 */
@@ -64,10 +70,18 @@
     border-left: 6px solid #ffb38e;
   }
 
-  .title {
-    font-size: 16px;
+  /* 左側のバス停名を大きく */
+  .from {
+    font-size: 20px;
     font-weight: bold;
-    color: #333;
+    color: #222;
+    line-height: 1.3;
+  }
+
+  /* 右側のバス停名は少し小さく */
+  .to {
+    font-size: 15px;
+    color: #555;
   }
 
   .time {
@@ -93,7 +107,7 @@
 <div id="bus"></div>
 
 <script>
-/* 並び順を強制するマップ（1→8→2→7→3→5→4→6） */
+/* 並び順（1→8→2→7→3→5→4→6） */
 const orderMap = [0, 7, 1, 6, 2, 4, 3, 5];
 
 /* タイトル完全一致リンク */
@@ -125,7 +139,7 @@ const routeLinks = {
 
 async function loadBus() {
   const url =
-    "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/latest.json?v=" +
+    "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.amazonaws.com/latest.json?v=" +
     Date.now();
 
   const res = await fetch(url, { cache: "no-store" });
@@ -144,17 +158,25 @@ async function loadBus() {
     const div = document.createElement("div");
     const [title, time] = line.split(":");
 
-    /* 上4つ → 青、下4つ → オレンジ */
-    if (index < 4) {
-      div.className = "card card-up";
-    } else {
-      div.className = "card card-down";
+    /* タイトルを「左側 → 右側」に分解 */
+    const match = title.match(/^(.*) → (.*)$/);
+    let from = title;
+    let to = "";
+    if (match) {
+      from = match[1];
+      to = match[2];
     }
+
+    /* 上4つ → 青、下4つ → オレンジ */
+    div.className = index < 4 ? "card card-up" : "card card-down";
 
     const link = routeLinks[title] || "#";
 
     div.innerHTML = `
-      <div class="title">${title}</div>
+      <div class="title">
+        <span class="from">${from}</span><br>
+        <span class="to">→ ${to}</span>
+      </div>
       <div class="time">${time}</div>
       <div class="link"><a href="${link}" target="_blank">▶ この路線の詳細を見る</a></div>
     `;
