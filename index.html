@@ -48,13 +48,13 @@
     box-shadow: 0 3px 8px rgba(0,0,0,0.1);
   }
 
-  /* 上2つ（NAVITIME） */
-  .card-top {
+  /* 国際興業バス（赤31） → 青系 */
+  .card-kokusai {
     border-left: 6px solid #8ea6ff;
   }
 
-  /* 下3つ（都バス） */
-  .card-bottom {
+  /* 都営バス（王78） → オレンジ系 */
+  .card-toei {
     border-left: 6px solid #ffb38e;
   }
 
@@ -97,11 +97,12 @@
 
 <script>
 const routeLinks = {
-  "小茂根 → 高円寺": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020127&arrival-busstop=00020420",
-  "武蔵野病院 → 高円寺": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020128&arrival-busstop=00020420",
-  "野方二丁目 → 武蔵野病院/小茂根": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020422&arrival-busstop=00020128",
-  "野方二丁目 → 王子駅方面（武蔵野病院/小茂根)": "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1203&poleno=2&ln=ja",
-  "高円寺 → 王子駅方面（武蔵野病院/小茂根)": "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=478&poleno=2&ln=ja"
+  "【国際興業バス：赤31】小茂根 → 高円寺": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020127&arrival-busstop=00020420",
+  "【国際興業バス：赤31】武蔵野病院 → 高円寺": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020128&arrival-busstop=00020420",
+  "【国際興業バス：赤31】野方二丁目 → 武蔵野病院/小茂根": "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020422&arrival-busstop=00020128",
+
+  "【都営バス：王78】野方二丁目 → 王子駅方面（武蔵野病院/小茂根)": "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1203&poleno=2&ln=ja",
+  "【都営バス：王78】高円寺 → 王子駅方面（武蔵野病院/小茂根)": "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=478&poleno=2&ln=ja"
 };
 
 async function loadBus() {
@@ -115,17 +116,17 @@ async function loadBus() {
   const box = document.getElementById("bus");
   box.innerHTML = "";
 
-  data.data.forEach((line, index) => {
+  data.data.forEach(line => {
     const div = document.createElement("div");
 
-    // 上2つ → 青系、下3つ → オレンジ系
-    if (index < 2) {
-      div.className = "card card-top";
-    } else {
-      div.className = "card card-bottom";
-    }
-
     const [title, time] = line.split(":");
+
+    // 色分け判定
+    if (title.includes("国際興業バス")) {
+      div.className = "card card-kokusai";
+    } else {
+      div.className = "card card-toei";
+    }
 
     div.innerHTML = `
       <div class="title">${title}</div>
