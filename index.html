@@ -48,13 +48,13 @@
     box-shadow: 0 3px 8px rgba(0,0,0,0.1);
   }
 
-  /* 国際興業バス（赤31） → 青系 */
-  .card-kokusai {
+  /* 上り（上2つ）→ 青 */
+  .card-up {
     border-left: 6px solid #8ea6ff;
   }
 
-  /* 都営バス（王78） → オレンジ系 */
-  .card-toei {
+  /* 下り（下3つ）→ オレンジ */
+  .card-down {
     border-left: 6px solid #ffb38e;
   }
 
@@ -96,7 +96,7 @@
 <div id="bus"></div>
 
 <script>
-/* タイトル完全一致でリンクを返す */
+/* タイトル完全一致リンク */
 const routeLinks = {
   "【国際興業バス：赤31】小茂根 → 高円寺":
     "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020127&arrival-busstop=00020420",
@@ -128,15 +128,15 @@ async function loadBus() {
   const box = document.getElementById("bus");
   box.innerHTML = "";
 
-  data.data.forEach(line => {
+  data.data.forEach((line, index) => {
     const div = document.createElement("div");
     const [title, time] = line.split(":");
 
-    // 色分け
-    if (title.includes("国際興業バス")) {
-      div.className = "card card-kokusai";
+    /* 上2つ → 上り（青）、下3つ → 下り（オレンジ） */
+    if (index < 2) {
+      div.className = "card card-up";
     } else {
-      div.className = "card card-toei";
+      div.className = "card card-down";
     }
 
     const link = routeLinks[title] || "#";
