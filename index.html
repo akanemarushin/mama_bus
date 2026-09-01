@@ -38,65 +38,46 @@
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
   }
 
-  /* ★ スマホ優先：1列＋タイル大きめ */
-  #bus {
-    display: grid;
-    grid-template-columns: 1fr; /* スマホは1列固定 */
-    gap: 12px;
-  }
-
-  .card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 16px;
-    height: 170px;              /* ★ タイルを大きく */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  }
-
-  .card-up {
-    border-left: 6px solid #8ea6ff;
-  }
-
-  .card-down {
-    border-left: 6px solid #ffb38e;
-  }
-
-  .from {
-    font-size: 22px;            /* ★ 左側のバス停名を大きく */
-    font-weight: bold;
-    color: #222;
-    line-height: 1.2;
-  }
-
-  .to {
-    font-size: 16px;
-    color: #555;
-  }
-
-  .time {
-    font-size: 18px;
-    font-weight: bold;
-    color: #444;
-  }
-
-  .link a {
-    font-size: 14px;
-    color: #6b7cff;
-    text-decoration: none;
-  }
-
-  /* ★ PC・タブレット用（自動で2列に） */
-  @media (min-width: 700px) {
+  /* ★ スマホ縦向きは必ず1列 */
+  @media (orientation: portrait) {
     #bus {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .card {
+      height: 180px;          /* ★ タイル大きめ */
+      padding: 18px;
+    }
+
+    .from {
+      font-size: 22px;
+    }
+
+    .to {
+      font-size: 16px;
+    }
+
+    .time {
+      font-size: 18px;
+    }
+
+    .link a {
+      font-size: 14px;
+    }
+  }
+
+  /* ★ PC・横向きスマホは2列 */
+  @media (orientation: landscape) {
+    #bus {
+      display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
     }
 
     .card {
-      height: 190px;            /* PCではさらに余裕を持たせる */
+      height: 200px;
       padding: 20px;
     }
 
@@ -115,6 +96,54 @@
     .link a {
       font-size: 15px;
     }
+  }
+
+  /* 初期値（念のため） */
+  #bus {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-up {
+    border-left: 6px solid #8ea6ff;
+  }
+
+  .card-down {
+    border-left: 6px solid #ffb38e;
+  }
+
+  .from {
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+  }
+
+  .to {
+    font-size: 16px;
+    color: #555;
+  }
+
+  .time {
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+  }
+
+  .link a {
+    font-size: 14px;
+    color: #6b7cff;
+    text-decoration: none;
   }
 </style>
 </head>
