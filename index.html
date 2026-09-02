@@ -38,7 +38,6 @@
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
   }
 
-  /* ★ スマホ縦向きは必ず1列 */
   @media (orientation: portrait) {
     #bus {
       display: grid;
@@ -47,12 +46,12 @@
     }
 
     .card {
-      height: 200px;          /* ★ タイル大きめ */
+      height: 200px;
       padding: 20px;
     }
 
     .from {
-      font-size: 40px !important;              /* ★ 文字大きく */
+      font-size: 40px !important;
       line-height: 1.3 !important;
     }
 
@@ -69,7 +68,6 @@
     }
   }
 
-  /* ★ PC・横向きスマホは2列 */
   @media (orientation: landscape) {
     #bus {
       display: grid;
@@ -99,7 +97,6 @@
     }
   }
 
-  /* 初期値（念のため） */
   #bus {
     display: grid;
     grid-template-columns: 1fr;
@@ -209,6 +206,11 @@ async function loadBus() {
 
     div.className = index < 4 ? "card card-up" : "card card-down";
 
+    // ★ 小茂根のカードに ID を付ける
+    if (from.includes("小茂根")) {
+      div.id = "komone";
+    }
+
     const link = routeLinks[title] || "#";
 
     div.innerHTML = `
@@ -227,6 +229,14 @@ document.getElementById("refreshBtn").onclick = loadBus;
 
 loadBus();
 setInterval(loadBus, 60000);
+
+// ★ ページ読み込み時に小茂根へスクロール
+window.addEventListener("load", () => {
+  const el = document.getElementById("komone");
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth" });
+  }
+});
 </script>
 
 </body>
