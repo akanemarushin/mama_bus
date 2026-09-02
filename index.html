@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>🚌あかねバスモニター🚌</title>
+<title>mama_bus</title>
 
 <!-- Google Fonts（丸みのある可愛いフォント） -->
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
@@ -80,21 +80,29 @@ header h1 {
   margin: 20px;
 }
 
-/* iframe */
+/* iframe（赤31） */
 iframe {
   margin-bottom: 20px;
   width: 100%;
-  height: 1000px;
+  height: 800px;   /* ← 赤31はこの高さのまま */
   border: none;
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
+/* 都営バスだけ高さを伸ばす */
+iframe.tobus-frame {
+  height: 1100px;  /* ← 好きな高さに調整できる */
+}
+
 /* スマホ対応 */
-@media (max-width: 800px) {
+@media (max-width: 600px) {
   iframe {
-    height: 800px;
+    height: 600px;
+  }
+  iframe.tobus-frame {
+    height: 900px;
   }
   header h1 {
     font-size: 26px;
@@ -106,7 +114,7 @@ iframe {
 <body>
 
 <header>
-  <h1>🚌あかねバスモニター🚌</h1>
+  <h1>mama_bus</h1>
   <button id="reload-btn">最新の情報に更新</button>
   <div id="update-time">更新時刻: 読み込み中...</div>
 </header>
@@ -142,17 +150,15 @@ loadUpdateTime();
 <div class="group-up">
   <div class="group-title">行き（上り）</div>
 
-  <!-- 小茂根 → 高円寺 -->
+  <!-- NAVITIME（赤31） → 高さそのまま -->
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_komone_to_koenji.html"></iframe>
 
-  <!-- 小茂根 → 新宿（都営） -->
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_komone_to_shinjuku.html"></iframe>
+  <!-- 都営バス → 高さ伸ばす -->
+  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_komone_to_shinjuku.html"></iframe>
 
-  <!-- 武蔵野病院 → 高円寺 -->
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_byoin_to_koenji.html"></iframe>
 
-  <!-- 武蔵野病院 → 新宿（都営） -->
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_byoin_to_shinjuku.html"></iframe>
+  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_byoin_to_shinjuku.html"></iframe>
 
 </div>
 
@@ -162,17 +168,13 @@ loadUpdateTime();
 <div class="group-down">
   <div class="group-title">帰り（下り）</div>
 
-  <!-- 野方 → 小茂根 -->
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_nogata_to_komone.html"></iframe>
 
-  <!-- 野方 → 王子（都営） -->
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_nogata_to_oji.html"></iframe>
+  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_nogata_to_oji.html"></iframe>
 
-  <!-- 高円寺 → 小茂根 -->
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_koenji_to_komone.html"></iframe>
 
-  <!-- 高円寺 → 王子（都営） -->
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_koenji_to_oji.html"></iframe>
+  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_koenji_to_oji.html"></iframe>
 
 </div>
 
