@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <title>🚌あかねバスモニター🚌</title>
 
+<!-- ★ GitHub Pages のキャッシュを毎回無効化する（タイムスタンプ付与） -->
+<script>
+(function() {
+  const url = new URL(window.location.href);
+
+  // ブックマークは ?v を含まないので、初回だけ付ける
+  if (!url.searchParams.has("v")) {
+    const ts = Date.now(); // タイムスタンプ
+    url.searchParams.set("v", ts);
+    window.location.replace(url.toString());
+  }
+})();
+</script>
+  
 <!-- Google Fonts（丸みのある可愛いフォント） -->
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
 
@@ -177,6 +191,18 @@ loadUpdateTime();
   <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_koenji_to_oji.html"></iframe>
 
 </div>
+<!-- ★ iframe の中身も毎回キャッシュ無効化する（タイムスタンプ付与） -->
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const iframes = document.querySelectorAll("iframe");
+  const ts = Date.now(); // タイムスタンプ
 
+  iframes.forEach(iframe => {
+    const url = new URL(iframe.src);
+    url.searchParams.set("v", ts);
+    iframe.src = url.toString();
+  });
+});
+</script>
 </body>
 </html>
