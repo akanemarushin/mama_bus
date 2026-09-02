@@ -110,6 +110,13 @@ iframe.tobus-frame {
   height: 1300px;  /* ← 好きな高さに調整できる */
 }
 
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 10px 0 5px 10px;
+  color: #4a7aff;
+}
+  
 /* スマホ対応 */
 @media (max-width: 600px) {
   iframe {
@@ -164,14 +171,17 @@ loadUpdateTime();
 <div class="group-up">
   <div class="group-title">行き（上り）</div>
 
-  <!-- NAVITIME（赤31） → 高さそのまま -->
+  <h2>小茂根 → 高円寺</h2>
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_komone_to_koenji.html"></iframe>
 
-  <!-- 都営バス → 高さ伸ばす -->
-  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_komone_to_shinjuku.html"></iframe>
-
+  <h2>武蔵野病院 → 高円寺</h2>
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_byoin_to_koenji.html"></iframe>
 
+  <!-- 都営バス → 高さ伸ばす -->
+  <h2>小茂根 → 新宿駅西口</h2>
+  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_komone_to_shinjuku.html"></iframe>
+
+  <h2>武蔵野病院 → 新宿駅西口</h2>
   <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_byoin_to_shinjuku.html"></iframe>
 
 </div>
@@ -182,12 +192,16 @@ loadUpdateTime();
 <div class="group-down">
   <div class="group-title">帰り（下り）</div>
 
+  <h2>野方二丁目 → 武蔵野病院 / 小茂根</h2>
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_nogata_to_komone.html"></iframe>
 
+  <h2>野方二丁目 → 王子駅</h2>
   <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_nogata_to_oji.html"></iframe>
 
+  <h2>高円寺 → 武蔵野病院 / 小茂根</h2>
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_koenji_to_komone.html"></iframe>
 
+  <h2>高円寺 → 王子駅</h2>
   <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_koenji_to_oji.html"></iframe>
 
 </div>
