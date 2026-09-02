@@ -1,280 +1,61 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>バスモニター（茜）</title>
-
 <style>
-  body {
-    font-family: "Rounded Mplus 1c", sans-serif;
-    background: #f7f7ff;
-    padding: 10px;
-  }
-
-  h1 {
-    text-align: center;
-    color: #555;
-    margin-bottom: 10px;
-    font-size: 40px;
-  }
-
-  #timestamp {
-    text-align: center;
-    color: #777;
-    margin-bottom: 10px;
-    font-size: 40px;
-  }
-
-  #refreshBtn {
-    display: block;
-    margin: 0 auto 15px auto;
-    padding: 8px 16px;
-    background: #8ea6ff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 40px;
-    cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-  }
-
-  /* ★ スマホ縦向きは必ず1列 */
-  @media (orientation: portrait) {
-    #bus {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    .card {
-      height: 200px;          /* ★ タイル大きめ */
-      padding: 20px;
-    }
-
-    .from {
-      font-size: 40px !important;              /* ★ 文字大きく */
-      line-height: 1.3 !important;
-    }
-
-    .to {
-      font-size: 30px !important;
-    }
-
-    .time {
-      font-size: 40px !important;
-    }
-
-    .link a {
-      font-size:30px !important;
-    }
-  }
-
-  /* ★ PC・横向きスマホは2列 */
-  @media (orientation: landscape) {
-    #bus {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .card {
-      height: 200px;
-      padding: 20px;
-    }
-
-    .from {
-      font-size: 24px;
-    }
-
-    .to {
-      font-size: 18px;
-    }
-
-    .time {
-      font-size: 20px;
-    }
-
-    .link a {
-      font-size: 25px;
-    }
-  }
-
-  /* 初期値（念のため） */
-  #bus {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
-  .card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .card-up {
-    border-left: 10px solid #8ea6ff;
-  }
-
-  .card-down {
-    border-left: 10px solid #ffb38e;
-  }
-
-  .from {
-    font-size: 40px;
-    font-weight: bold;
-    color: #222;
-  }
-
-  .to {
-    font-size: 30px;
-    color: #555;
-  }
-
-  .time {
-    font-size: 40px;
-    font-weight: bold;
-    color: #444;
-  }
-
-  .link a {
-    font-size: 30px;
-    color: #6b7cff;
-    text-decoration: none;
-  }
-</style>
-</head>
-
-<body>
-<h1>🚌 バスモニター（茜）</h1>
-
-<button id="refreshBtn">最新の情報に更新</button>
-
-<div id="timestamp"></div>
-<div id="bus"></div>
-
-<script>
-const orderMap = [0, 7, 1, 6, 2, 4, 3, 5];
-
-const routeLinks = {
-  "【国際興業バス：赤31】小茂根 → 高円寺":
-    "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020127&arrival-busstop=00020420",
-  "【国際興業バス：赤31】武蔵野病院 → 高円寺":
-    "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020128&arrival-busstop=00020420",
-  "【国際興業バス：赤31】野方二丁目 → 武蔵野病院/小茂根":
-    "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020422&arrival-busstop=00020127",
-  "【国際興業バス：赤31】高円寺 → 武蔵野病院/小茂根":
-    "https://transfer-cloud.navitime.biz/5931bus/approachings?departure-busstop=00020420&arrival-busstop=00020127",
-  "【都営バス：王78】野方二丁目 → 王子駅方面(武蔵野病院/小茂根)":
-    "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1203&poleno=2&ln=ja",
-  "【都営バス：王78】高円寺 → 王子駅方面(武蔵野病院/小茂根)":
-    "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=478&poleno=2&ln=ja",
-  "【都営バス：王78】武蔵野病院 → 新宿駅方面(高円寺)":
-    "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=1517&poleno=1&ln=ja",
-  "【都営バス：王78】小茂根 → 新宿駅(高円寺)":
-    "https://tobus.jp/sp/blsys/stop?routecode=148&stopid=555&poleno=1&ln=ja"
-};
-
-async function loadBus() {
-  const url =
-    "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/latest.json?v=" +
-    Date.now();
-
-  const res = await fetch(url, { cache: "no-store" });
-  const data = await res.json();
-
-  document.getElementById("timestamp").textContent =
-    "更新時刻: " + new Date(data.timestamp).toLocaleString("ja-JP");
-
-  const box = document.getElementById("bus");
-  box.innerHTML = "";
-
-  const sorted = orderMap.map(i => data.data[i]);
-
-  sorted.forEach((line, index) => {
-    const div = document.createElement("div");
-    const [title, time] = line.split(":");
-
-    const match = title.match(/^(.*) → (.*)$/);
-    let from = title;
-    let to = "";
-    if (match) {
-      from = match[1];
-      to = match[2];
-    }
-
-    div.className = index < 4 ? "card card-up" : "card card-down";
-
-    const link = routeLinks[title] || "#";
-
-    div.innerHTML = `
-      <div class="title">
-        <span class="from">${from}</span> <span class="to">→ ${to}</span><br>
-      </div>
-      <div class="time">${time}</div>
-      <div class="link"><a href="${link}" target="_blank">▶ この路線の詳細を見る</a></div>
-    `;
-
-    box.appendChild(div);
-  });
+.group-up {
+  border: 4px solid #8ea6ff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 32px;
 }
 
-document.getElementById("refreshBtn").onclick = loadBus;
+.group-down {
+  border: 4px solid #ffb38e;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 32px;
+}
 
-loadBus();
-setInterval(loadBus, 60000);
-</script>
-<!-- 国際興業バス：赤31 小茂根 → 高円寺 -->
-<iframe
-  src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_komone_to_koenji.html"
-  style="width:100%; height:800px; border:none; margin-bottom:20px;"
-></iframe>
+iframe {
+  margin-bottom: 20px;
+  width: 100%;
+  height: 800px;
+  border: none;
+  overflow: hidden;
+}
+</style>
 
-<!-- 国際興業バス：赤31 武蔵野病院 → 高円寺 -->
-<iframe
-  src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_byoin_to_koenji.html"
-  style="width:100%; height:800px; border:none; margin-bottom:20px;"
-></iframe>
+<!-- ========================= -->
+<!--   上り（行き）グループ   -->
+<!-- ========================= -->
+<div class="group-up">
 
-<!-- 国際興業バス：赤31 野方二丁目 → 武蔵野病院/小茂根 -->
-<iframe
-  src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_nogata_to_komone.html"
-  style="width:100%; height:800px; border:none; margin-bottom:20px;"
-></iframe>
+  <!-- 国際興業バス：赤31 小茂根 → 高円寺 -->
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_komone_to_koenji.html"></iframe>
 
-<!-- 国際興業バス：赤31 高円寺 → 武蔵野病院/小茂根 -->
-<iframe
-  src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_koenji_to_komone.html"
-  style="width:100%; height:800px; border:none; margin-bottom:20px;"
-></iframe>
+  <!-- 国際興業バス：赤31 武蔵野病院 → 高円寺 -->
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_byoin_to_koenji.html"></iframe>
 
-<!-- 都営バス：王78 野方二丁目 → 王子駅方面 -->
-<iframe
-  src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_nogata_to_oji.html"
-  style="width:100%; height:800px; border:none; margin-bottom:20px;"
-></iframe>
+  <!-- 国際興業バス：赤31 野方二丁目 → 武蔵野病院/小茂根 -->
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_nogata_to_komone.html"></iframe>
 
-<!-- 都営バス：王78 高円寺 → 王子駅方面 -->
-<iframe
-  src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_koenji_to_oji.html"
-  style="width:100%; height:800px; border:none; margin-bottom:20px;"
-></iframe>
+  <!-- 国際興業バス：赤31 高円寺 → 武蔵野病院/小茂根 -->
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_koenji_to_komone.html"></iframe>
 
-<!-- 都営バス：王78 武蔵野病院 → 新宿駅方面 -->
-<iframe
-  src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_byoin_to_shinjuku.html"
-  style="width:100%; height:800px; border:none; margin-bottom:20px;"
-></iframe>
+</div>
 
-<!-- 都営バス：王78 小茂根 → 新宿駅 -->
-<iframe
-  src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_komone_to_shinjuku.html"
-  style="width:100%; height:800px; border:none; margin-bottom:20px;"
-></iframe>
+<!-- ========================= -->
+<!--   下り（帰り）グループ   -->
+<!-- ========================= -->
+<div class="group-down">
 
-</body>
-</html>
+  <!-- 都営バス：王78 野方二丁目 → 王子駅方面 -->
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_nogata_to_oji.html"></iframe>
+
+  <!-- 都営バス：王78 高円寺 → 王子駅方面 -->
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_koenji_to_oji.html"></iframe>
+
+  <!-- 都営バス：王78 武蔵野病院 → 新宿駅方面 -->
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_byoin_to_shinjuku.html"></iframe>
+
+  <!-- 都営バス：王78 小茂根 → 新宿駅 -->
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_komone_to_shinjuku.html"></iframe>
+
+</div>
