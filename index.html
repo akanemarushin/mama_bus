@@ -223,21 +223,22 @@ async function loadBus() {
 
     box.appendChild(div);
   });
+
+  // ★ 描画が終わったあとでスクロールする
+  const el = document.getElementById("komone");
+  if (el && !loadBus._scrolledOnce) {
+    el.scrollIntoView({ behavior: "smooth" });
+    loadBus._scrolledOnce = true; // 1回だけスクロール
+  }
 }
 
-document.getElementById("refreshBtn").onclick = loadBus;
+document.getElementById("refreshBtn").onclick = () => {
+  loadBus._scrolledOnce = true; // 手動更新時はスクロールしない
+  loadBus();
+};
 
 loadBus();
 setInterval(loadBus, 60000);
-
-// ★ ページ読み込み時に小茂根へスクロール
-window.addEventListener("load", () => {
-  const el = document.getElementById("komone");
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth" });
-  }
-});
-</script>
 
 </body>
 </html>
