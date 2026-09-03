@@ -4,21 +4,6 @@
 <meta charset="UTF-8">
 <title>🚌あかねバスモニター🚌</title>
 
-<!-- ★ GitHub Pages のキャッシュを毎回無効化する（タイムスタンプ付与） -->
-<script>
-(function() {
-  const url = new URL(window.location.href);
-
-  // ブックマークは ?v を含まないので、初回だけ付ける
-  if (!url.searchParams.has("v")) {
-    const ts = Date.now(); // タイムスタンプ
-    url.searchParams.set("v", ts);
-    window.location.replace(url.toString());
-  }
-})();
-</script>
-  
-<!-- Google Fonts（丸みのある可愛いフォント） -->
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -30,7 +15,6 @@ body {
   color: #333;
 }
 
-/* タイトル */
 header {
   text-align: center;
   padding: 20px 0;
@@ -46,7 +30,6 @@ header h1 {
   color: #4a7aff;
 }
 
-/* 更新ボタン */
 #reload-btn {
   padding: 12px 24px;
   background: #4a7aff;
@@ -62,14 +45,12 @@ header h1 {
   background: #335eea;
 }
 
-/* 更新時刻 */
 #update-time {
   font-size: 18px;
   margin-top: 10px;
   color: #555;
 }
 
-/* グループタイトル */
 .group-title {
   font-size: 24px;
   font-weight: 700;
@@ -77,7 +58,6 @@ header h1 {
   padding-left: 10px;
 }
 
-/* グループ枠 */
 .group-up {
   border: 10px solid #8ea6ff;
   background: #ffffff;
@@ -94,47 +74,26 @@ header h1 {
   margin: 20px;
 }
 
-/* iframe（赤31） */
-iframe {
-  margin-bottom: 20px;
-  width: 100%;
-  height: 800px;   /* ← 赤31はこの高さのまま */
-  border: none;
-  overflow: hidden;
+.bus-block {
+  margin-bottom: 30px;
+  padding: 10px;
+  background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* 都営バスだけ高さを伸ばす */
-iframe.tobus-frame {
-  height: 1300px;  /* ← 好きな高さに調整できる */
-}
-
-h2 {
+.bus-title {
   font-size: 22px;
   font-weight: 700;
-  margin: 10px 0 5px 10px;
-  color: #6a8cff;
+  margin: 10px 0;
+  color: #4a7aff;
 }
 
-  h3 {
+.bus-title-orange {
   font-size: 22px;
   font-weight: 700;
-  margin: 10px 0 5px 10px;
+  margin: 10px 0;
   color: #ff8f5a;
-}
-  
-/* スマホ対応 */
-@media (max-width: 600px) {
-  iframe {
-    height: 600px;
-  }
-  iframe.tobus-frame {
-    height: 900px;
-  }
-  header h1 {
-    font-size: 26px;
-  }
 }
 </style>
 </head>
@@ -144,32 +103,40 @@ h2 {
 <header>
   <h1>🚌あかねバスモニター🚌</h1>
   <button id="reload-btn">最新の情報に更新</button>
-  <div id="update-time">更新時刻: 読み込み中...</div>
+  <div id="update-time">読み込み中...</div>
 </header>
 
 <script>
-// 更新時刻を読み込む
-async function loadUpdateTime() {
-  const url = "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/last_update.json?v=" + Date.now();
-  const res = await fetch(url, { cache: "no-store" });
-  const json = await res.json();
+const LAMBDA = "https://あなたの-lambda-url";  // ← Lambda URL をここに入れる
 
-  const ts = new Date(json.timestamp).toLocaleString("ja-JP");
-  document.getElementById("update-time").textContent = "バス情報更新時刻: " + ts;
+async function load(route, elementId) {
+  const res = await fetch(`${LAMBDA}?route=${route}`);
+  const html = await res.text();
+  document.getElementById(elementId).innerHTML = html;
 }
 
-// 最新の情報に更新ボタン
-document.getElementById("reload-btn").onclick = () => {
-  location.reload();
-};
+async function loadAll() {
+  const ts = new Date().toLocaleString("ja-JP");
+  document.getElementById("update-time").textContent = "更新時刻: " + ts;
 
-// 1分ごとに自動更新
-setInterval(() => {
-  location.reload();
-}, 60000);
+  await load("aka31_komone_to_koenji", "aka31_komone_to_koenji");
+  await load("tobus_komone_to_shinjuku", "tobus_komone_to_shinjuku");
+  await load("aka31_byoin_to_koenji", "aka31_byoin_to_koenji");
+  await load("tobus_byoin_to_shinjuku", "tobus_byoin_to_shinjuku");
+
+  await load("aka31_nogata_to_komone", "aka31_nogata_to_komone");
+  await load("tobus_nogata_to_oji", "tobus_nogata_to_oji");
+  await load("aka31_koenji_to_komone", "aka31_koenji_to_komone");
+  await load("tobus_koenji_to_oji", "tobus_koenji_to_oji");
+}
+
+document.getElementById("reload-btn").onclick = loadAll;
 
 // 初回読み込み
-loadUpdateTime();
+loadAll();
+
+// 1分ごとに自動更新
+setInterval(loadAll, 60000);
 </script>
 
 <!-- ========================= -->
@@ -178,19 +145,25 @@ loadUpdateTime();
 <div class="group-up">
   <div class="group-title">行き（上り）</div>
 
-  <h2>小茂根 → 高円寺駅北口</h2>
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_komone_to_koenji.html"></iframe>
+  <div class="bus-block">
+    <div class="bus-title">小茂根 → 高円寺駅北口</div>
+    <div id="aka31_komone_to_koenji"></div>
+  </div>
 
-    <!-- 都営バス → 高さ伸ばす -->
-  <h2>小茂根 → 新宿駅西口(高円寺)</h2>
-  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_komone_to_shinjuku.html"></iframe>
-  
-  <h2>武蔵野病院 → 高円寺駅北口</h2>
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_byoin_to_koenji.html"></iframe>
+  <div class="bus-block">
+    <div class="bus-title">小茂根 → 新宿駅西口(高円寺)</div>
+    <div id="tobus_komone_to_shinjuku"></div>
+  </div>
 
-  <h2>武蔵野病院 → 新宿駅西口(高円寺)</h2>
-  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_byoin_to_shinjuku.html"></iframe>
+  <div class="bus-block">
+    <div class="bus-title">武蔵野病院 → 高円寺駅北口</div>
+    <div id="aka31_byoin_to_koenji"></div>
+  </div>
 
+  <div class="bus-block">
+    <div class="bus-title">武蔵野病院 → 新宿駅西口(高円寺)</div>
+    <div id="tobus_byoin_to_shinjuku"></div>
+  </div>
 </div>
 
 <!-- ========================= -->
@@ -199,31 +172,26 @@ loadUpdateTime();
 <div class="group-down">
   <div class="group-title">帰り（下り）</div>
 
-  <h3>野方二丁目 → 赤羽駅東口(武蔵野病院 / 小茂根)</h3>
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_nogata_to_komone.html"></iframe>
+  <div class="bus-block">
+    <div class="bus-title-orange">野方二丁目 → 赤羽駅東口</div>
+    <div id="aka31_nogata_to_komone"></div>
+  </div>
 
-  <h3>野方二丁目 → 王子駅(武蔵野病院 / 小茂根)</h3>
-  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_nogata_to_oji.html"></iframe>
+  <div class="bus-block">
+    <div class="bus-title-orange">野方二丁目 → 王子駅</div>
+    <div id="tobus_nogata_to_oji"></div>
+  </div>
 
-  <h3>高円寺駅北口 → 赤羽駅東口(武蔵野病院 / 小茂根)</h3>
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_koenji_to_komone.html"></iframe>
+  <div class="bus-block">
+    <div class="bus-title-orange">高円寺駅北口 → 赤羽駅東口</div>
+    <div id="aka31_koenji_to_komone"></div>
+  </div>
 
-  <h3>高円寺駅入口 → 王子駅(武蔵野病院 / 小茂根)</h3>
-  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_koenji_to_oji.html"></iframe>
-
+  <div class="bus-block">
+    <div class="bus-title-orange">高円寺駅入口 → 王子駅</div>
+    <div id="tobus_koenji_to_oji"></div>
+  </div>
 </div>
-<!-- ★ iframe の中身も毎回キャッシュ無効化する（タイムスタンプ付与） -->
-<script>
-window.addEventListener("DOMContentLoaded", () => {
-  const iframes = document.querySelectorAll("iframe");
-  const ts = Date.now(); // タイムスタンプ
 
-  iframes.forEach(iframe => {
-    const url = new URL(iframe.src);
-    url.searchParams.set("v", ts);
-    iframe.src = url.toString();
-  });
-});
-</script>
 </body>
 </html>
