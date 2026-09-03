@@ -9,10 +9,12 @@
 (function() {
   const url = new URL(window.location.href);
 
-  // ブックマークは ?v を含まないので、初回だけ付ける
-  if (!url.searchParams.has("v")) {
-    const ts = Date.now(); // タイムスタンプ
-    url.searchParams.set("v", ts);
+  // 毎回新しい v= を付け直す
+  const ts = Date.now();
+  url.searchParams.set("v", ts);
+
+  // v= が変わっている場合だけリロード
+  if (window.location.href !== url.toString()) {
     window.location.replace(url.toString());
   }
 })();
