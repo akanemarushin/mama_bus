@@ -148,14 +148,10 @@ h2 {
 </header>
 
 <script>
-// 更新時刻を読み込む
-async function loadUpdateTime() {
-  const url = "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/last_update.json?v=" + Date.now();
-  const res = await fetch(url, { cache: "no-store" });
-  const json = await res.json();
-
-  const ts = new Date(json.timestamp).toLocaleString("ja-JP");
-  document.getElementById("update-time").textContent = "更新時刻: " + ts;
+// ページを読み込んだ時刻を表示
+function updateTime() {
+  const ts = new Date().toLocaleString("ja-JP");
+  document.getElementById("update-time").textContent = "⌚更新時刻: " + ts;
 }
 
 // 最新の情報に更新ボタン
@@ -169,7 +165,8 @@ setInterval(() => {
 }, 60000);
 
 // 初回読み込み
-loadUpdateTime();
+updateTime();
+
 </script>
 
 <!-- ========================= -->
