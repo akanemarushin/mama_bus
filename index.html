@@ -4,8 +4,20 @@
 <meta charset="UTF-8">
 <title>🚌あかねバスモニター🚌</title>
 
-<!-- ❌ 無限ループの原因 → 完全削除しました -->
+<!-- ★ GitHub Pages のキャッシュを毎回無効化する（タイムスタンプ付与） -->
+<script>
+(function() {
+  const url = new URL(window.location.href);
 
+  // ブックマークは ?v を含まないので、初回だけ付ける
+  if (!url.searchParams.has("v")) {
+    const ts = Date.now(); // タイムスタンプ
+    url.searchParams.set("v", ts);
+    window.location.replace(url.toString());
+  }
+})();
+</script>
+  
 <!-- Google Fonts（丸みのある可愛いフォント） -->
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
 
@@ -86,7 +98,7 @@ header h1 {
 iframe {
   margin-bottom: 20px;
   width: 100%;
-  height: 800px;
+  height: 800px;   /* ← 赤31はこの高さのまま */
   border: none;
   overflow: hidden;
   border-radius: 12px;
@@ -95,7 +107,7 @@ iframe {
 
 /* 都営バスだけ高さを伸ばす */
 iframe.tobus-frame {
-  height: 1300px;
+  height: 1300px;  /* ← 好きな高さに調整できる */
 }
 
 h2 {
@@ -105,13 +117,13 @@ h2 {
   color: #6a8cff;
 }
 
-h3 {
+  h3 {
   font-size: 22px;
   font-weight: 700;
   margin: 10px 0 5px 10px;
   color: #ff8f5a;
 }
-
+  
 /* スマホ対応 */
 @media (max-width: 600px) {
   iframe {
@@ -136,31 +148,28 @@ h3 {
 </header>
 
 <script>
-// ページを読み込んだ時刻を表示
-function updateTime() {
-  const ts = new Date().toLocaleString("ja-JP");
-  document.getElementById("update-time").textContent = "⌚更新時刻: " + ts;
+// 更新時刻を読み込む
+async function loadUpdateTime() {
+  const url = "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/last_update.json?v=" + Date.now();
+  const res = await fetch(url, { cache: "no-store" });
+  const json = await res.json();
+
+  const ts = new Date(json.timestamp).toLocaleString("ja-JP");
+  document.getElementById("update-time").textContent = "バス情報更新時刻: " + ts;
 }
 
-// ★ URL に新しい v= を付けてリロードする関数
-function reloadWithNewV() {
-  const url = new URL(window.location.href);
-  url.searchParams.set("v", Date.now());
-  window.location.href = url.toString();  // ← これが正しい
-}
-
-// 更新ボタン
+// 最新の情報に更新ボタン
 document.getElementById("reload-btn").onclick = () => {
-  reloadWithNewV();
+  location.reload();
 };
 
 // 1分ごとに自動更新
 setInterval(() => {
-  reloadWithNewV();
+  location.reload();
 }, 60000);
 
 // 初回読み込み
-updateTime();
+loadUpdateTime();
 </script>
 
 <!-- ========================= -->
@@ -169,17 +178,18 @@ updateTime();
 <div class="group-up">
   <div class="group-title">行き（上り）</div>
 
-<h2>小茂根 → 高円寺駅北口</h2>
-<iframe src="https://xxxx.lambda-url.ap-northeast-1.on.aws/?key=aka31_komone_to_koenji"></iframe>
+  <h2>小茂根 → 高円寺駅北口</h2>
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_komone_to_koenji.html"></iframe>
 
-<h2>小茂根 → 新宿駅西口(高円寺)</h2>
-<iframe class="tobus-frame" src="https://xxxx.lambda-url.ap-northeast-1.on.aws/?key=tobus_komone_to_shinjuku"></iframe>
+    <!-- 都営バス → 高さ伸ばす -->
+  <h2>小茂根 → 新宿駅西口(高円寺)</h2>
+  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_komone_to_shinjuku.html"></iframe>
+  
+  <h2>武蔵野病院 → 高円寺駅北口</h2>
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_byoin_to_koenji.html"></iframe>
 
-<h2>武蔵野病院 → 高円寺駅北口</h2>
-<iframe src="https://xxxx.lambda-url.ap-northeast-1.on.aws/?key=aka31_byoin_to_koenji"></iframe>
-
-<h2>武蔵野病院 → 新宿駅西口(高円寺)</h2>
-<iframe class="tobus-frame" src="https://xxxx.lambda-url.ap-northeast-1.on.aws/?key=tobus_byoin_to_shinjuku"></iframe>
+  <h2>武蔵野病院 → 新宿駅西口(高円寺)</h2>
+  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_byoin_to_shinjuku.html"></iframe>
 
 </div>
 
@@ -189,19 +199,31 @@ updateTime();
 <div class="group-down">
   <div class="group-title">帰り（下り）</div>
 
-<h3>野方二丁目 → 赤羽駅東口</h3>
-<iframe src="https://xxxx.lambda-url.ap-northeast-1.on.aws/?key=aka31_nogata_to_komone"></iframe>
+  <h3>野方二丁目 → 赤羽駅東口(武蔵野病院 / 小茂根)</h3>
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_nogata_to_komone.html"></iframe>
 
-<h3>野方二丁目 → 王子駅</h3>
-<iframe class="tobus-frame" src="https://xxxx.lambda-url.ap-northeast-1.on.aws/?key=tobus_nogata_to_oji"></iframe>
+  <h3>野方二丁目 → 王子駅(武蔵野病院 / 小茂根)</h3>
+  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_nogata_to_oji.html"></iframe>
 
-<h3>高円寺駅北口 → 赤羽駅東口</h3>
-<iframe src="https://xxxx.lambda-url.ap-northeast-1.on.aws/?key=aka31_koenji_to_komone"></iframe>
+  <h3>高円寺駅北口 → 赤羽駅東口(武蔵野病院 / 小茂根)</h3>
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_koenji_to_komone.html"></iframe>
 
-<h3>高円寺駅入口 → 王子駅</h3>
-<iframe class="tobus-frame" src="https://xxxx.lambda-url.ap-northeast-1.on.aws/?key=tobus_koenji_to_oji"></iframe>
+  <h3>高円寺駅入口 → 王子駅(武蔵野病院 / 小茂根)</h3>
+  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_koenji_to_oji.html"></iframe>
 
 </div>
+<!-- ★ iframe の中身も毎回キャッシュ無効化する（タイムスタンプ付与） -->
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const iframes = document.querySelectorAll("iframe");
+  const ts = Date.now(); // タイムスタンプ
 
+  iframes.forEach(iframe => {
+    const url = new URL(iframe.src);
+    url.searchParams.set("v", ts);
+    iframe.src = url.toString();
+  });
+});
+</script>
 </body>
 </html>
