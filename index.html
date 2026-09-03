@@ -212,18 +212,6 @@ updateTime();
 
 
 </div>
-<!-- ★ iframe の中身も毎回キャッシュ無効化する（タイムスタンプ付与） -->
-<script>
-window.addEventListener("DOMContentLoaded", () => {
-  const iframes = document.querySelectorAll("iframe");
-  const ts = Date.now(); // タイムスタンプ
 
-  iframes.forEach(iframe => {
-    const url = new URL(iframe.src);
-    url.searchParams.set("v", ts);
-    iframe.src = url.toString();
-  });
-});
-</script>
 </body>
 </html>
