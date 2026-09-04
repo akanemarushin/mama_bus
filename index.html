@@ -15,7 +15,6 @@ body {
   color: #333;
 }
 
-/* タイトル */
 header {
   text-align: center;
   padding: 20px 0;
@@ -31,7 +30,6 @@ header h1 {
   color: #4a7aff;
 }
 
-/* 出発地ナビ（ページ上部リンク） */
 .origin-nav {
   display: flex;
   gap: 14px;
@@ -61,7 +59,6 @@ header h1 {
   transform: translateY(-2px);
 }
 
-/* 更新ボタン */
 #reload-btn {
   padding: 28px 42px;
   background: #4a7aff;
@@ -80,14 +77,12 @@ header h1 {
   transform: translateY(-2px);
 }
 
-/* 更新時刻 */
 #update-time {
   font-size: 18px;
   margin-top: 12px;
   color: #555;
 }
 
-/* 出発地カード（色違い） */
 .origin-block {
   background: #ffffff;
   border-radius: 18px;
@@ -97,7 +92,6 @@ header h1 {
   border-left: 14px solid #4a7aff;
 }
 
-/* 出発地タイトル（アイコン付き） */
 .origin-title {
   font-size: 30px;
   font-weight: 800;
@@ -113,13 +107,11 @@ header h1 {
   font-size: 32px;
 }
 
-/* 出発地ごとに色を変える */
 .origin-komone   { border-left-color: #4a7aff; }
 .origin-byoin    { border-left-color: #ff8f5a; }
 .origin-nogata   { border-left-color: #8ecf5a; }
 .origin-koenji   { border-left-color: #c58eff; }
 
-/* iframe 共通 */
 iframe {
   margin-bottom: 24px;
   width: 100%;
@@ -130,12 +122,10 @@ iframe {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* 都営バスだけ高さを伸ばす */
 iframe.tobus-frame {
   height: 1300px;
 }
 
-/* 関東バスだけ少し高さを伸ばす */
 iframe.kantobus-frame {
   height: 600px;
 }
@@ -146,7 +136,6 @@ h2, h3 {
   margin: 10px 0 5px 10px;
 }
 
-/* スマホ対応 */
 @media (max-width: 600px) {
   .origin-title { font-size: 24px; }
   iframe { height: 600px; }
@@ -176,7 +165,6 @@ h2, h3 {
   <div id="update-time">更新時刻: 読み込み中...</div>
 </header>
 
-<!-- ★ 出発地リンク（ジャンプメニュー） -->
 <nav class="origin-nav">
   <a href="#komone">小茂根</a>
   <a href="#byoin">武蔵野病院</a>
@@ -184,7 +172,6 @@ h2, h3 {
   <a href="#koenji">高円寺駅周辺</a>
 </nav>
 
-<!-- ページ表示時に Lambda を叩いて S3 を更新 -->
 <script>
 fetch("https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/screenshot", {
   method: "POST"
@@ -205,7 +192,6 @@ function reloadIframes() {
     newFrame.src = newSrc;
     newFrame.className = oldFrame.className;
 
-    // Safariの遅延読み込みを完全無効化
     newFrame.setAttribute("sandbox", "");
     newFrame.setAttribute("loading", "eager");
 
@@ -217,86 +203,71 @@ function reloadIframes() {
 
 reloadIframes();
 
-// 更新時刻を読み込む
 async function loadUpdateTime() {
-  const url = "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/last_update.json?v=" + Date.now();
+  const url = "https://d2ezfe4tunsmit.cloudfront.net/last_update.json?v=" + Date.now();
   const res = await fetch(url, { cache: "no-store" });
   const json = await res.json();
   const ts = new Date(json.timestamp).toLocaleString("ja-JP");
   document.getElementById("update-time").textContent = "バス情報更新時刻: " + ts;
 }
 
-// ボタン押したらページ全体を再読み込み
 document.getElementById("reload-btn").onclick = () => {
   location.reload();
 };
 
-// 初回読み込み
 loadUpdateTime();
 </script>
 
-<!-- ========================= -->
-<!--   出発地①：小茂根       -->
-<!-- ========================= -->
 <div id="komone" class="origin-block origin-komone">
   <div class="origin-title">出発地：小茂根</div>
 
   <h2>小茂根 → 高円寺駅北口（関東バス）</h2>
-  <iframe class="kantobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/kantobus_komone_to_koenji.html"></iframe>
+  <iframe class="kantobus-frame" src="https://d2ezfe4tunsmit.cloudfront.net/kantobus_komone_to_koenji.html"></iframe>
   
   <h2>小茂根 → 高円寺駅北口（国際興業バス）</h2>
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_komone_to_koenji.html"></iframe>
+  <iframe src="https://d2ezfe4tunsmit.cloudfront.net/aka31_komone_to_koenji.html"></iframe>
   
   <h2>小茂根 → 新宿駅西口（都バス）</h2>
-  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_komone_to_shinjuku.html"></iframe>
+  <iframe class="tobus-frame" src="https://d2ezfe4tunsmit.cloudfront.net/tobus_komone_to_shinjuku.html"></iframe>
 </div>
 
-<!-- ========================= -->
-<!--   出発地②：武蔵野病院   -->
-<!-- ========================= -->
 <div id="byoin" class="origin-block origin-byoin">
   <div class="origin-title">出発地：武蔵野病院</div>
 
   <h2>武蔵野病院 → 高円寺駅北口（国際興業バス）</h2>
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_byoin_to_koenji.html"></iframe>
+  <iframe src="https://d2ezfe4tunsmit.cloudfront.net/aka31_byoin_to_koenji.html"></iframe>
 
   <h2>武蔵野病院 → 高円寺駅北口（関東バス）</h2>
-  <iframe class="kantobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/kantobus_byoin_to_koenji.html"></iframe>
+  <iframe class="kantobus-frame" src="https://d2ezfe4tunsmit.cloudfront.net/kantobus_byoin_to_koenji.html"></iframe>
 
   <h2>武蔵野病院 → 新宿駅西口（都バス）</h2>
-  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_byoin_to_shinjuku.html"></iframe>
+  <iframe class="tobus-frame" src="https://d2ezfe4tunsmit.cloudfront.net/tobus_byoin_to_shinjuku.html"></iframe>
 </div>
 
-<!-- ========================= -->
-<!--   出発地③：野方二丁目   -->
-<!-- ========================= -->
 <div id="nogata" class="origin-block origin-nogata">
   <div class="origin-title">出発地：野方二丁目</div>
 
   <h3>野方二丁目 → 赤羽駅東口（関東バス）</h3>
-  <iframe class="kantobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/kantobus_nogata_to_komone.html"></iframe>
+  <iframe class="kantobus-frame" src="https://d2ezfe4tunsmit.cloudfront.net/kantobus_nogata_to_komone.html"></iframe>
   
   <h3>野方二丁目 → 赤羽駅東口（国際興業バス）</h3>
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_nogata_to_komone.html"></iframe>
+  <iframe src="https://d2ezfe4tunsmit.cloudfront.net/aka31_nogata_to_komone.html"></iframe>
 
   <h3>野方二丁目 → 王子駅（都バス）</h3>
-  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_nogata_to_oji.html"></iframe>
+  <iframe class="tobus-frame" src="https://d2ezfe4tunsmit.cloudfront.net/tobus_nogata_to_oji.html"></iframe>
 </div>
 
-<!-- ========================= -->
-<!--   出発地④：高円寺周辺   -->
-<!-- ========================= -->
 <div id="koenji" class="origin-block origin-koenji">
   <div class="origin-title">出発地：高円寺駅周辺</div>
 
   <h3>高円寺駅北口 → 赤羽駅東口 （関東バス）</h3>
-  <iframe class="kantobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/kantobus_koenji_to_komone.html"></iframe>
+  <iframe class="kantobus-frame" src="https://d2ezfe4tunsmit.cloudfront.net/kantobus_koenji_to_komone.html"></iframe>
   
   <h3>高円寺駅北口 → 赤羽駅東口（国際興業バス）</h3>
-  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_koenji_to_komone.html"></iframe>
+  <iframe src="https://d2ezfe4tunsmit.cloudfront.net/aka31_koenji_to_komone.html"></iframe>
 
   <h3>高円寺駅入口 → 王子駅（都バス）</h3>
-  <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_koenji_to_oji.html"></iframe>
+  <iframe class="tobus-frame" src="https://d2ezfe4tunsmit.cloudfront.net/tobus_koenji_to_oji.html"></iframe>
 </div>
 
 </body>
