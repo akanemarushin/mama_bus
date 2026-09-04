@@ -141,7 +141,6 @@ h3 {
   <h1>⚠ページの自動更新は休止しています⚠</h1>
   <button id="reload-btn">最新の情報に更新</button>
   <div id="update-time">更新時刻: 読み込み中...</div>
-
 </header>
 
 <script>
@@ -154,18 +153,7 @@ async function loadUpdateTime() {
   document.getElementById("update-time").textContent = "バス情報更新時刻: " + ts;
 }
 
-// ★ iframe を再読み込み（キャッシュ無効化）
-function reloadIframes() {
-  const iframes = document.querySelectorAll("iframe");
-  const ts = Date.now();
-  iframes.forEach(iframe => {
-    const url = new URL(iframe.src);
-    url.searchParams.set("v", ts);
-    iframe.src = url.toString();
-  });
-}
-
-// ★ ボタン押したらページ全体を再読み込み（Lambda が iframe 内で走る）
+// ★ ボタン押したらページ全体を再読み込み
 document.getElementById("reload-btn").onclick = () => {
   location.reload();
 };
@@ -180,14 +168,20 @@ loadUpdateTime();
 <div class="group-up">
   <div class="group-title">行き（上り）</div>
 
-  <h2>小茂根 → 高円寺駅北口</h2>
+  <h2>小茂根 → 高円寺駅北口（NAVITIME）</h2>
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_komone_to_koenji.html"></iframe>
+
+  <h2>小茂根 → 高円寺駅北口（関東バス）</h2>
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/kantobus_komone_to_koenji.html"></iframe>
 
   <h2>小茂根 → 新宿駅西口(高円寺)</h2>
   <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_komone_to_shinjuku.html"></iframe>
 
-  <h2>武蔵野病院 → 高円寺駅北口</h2>
+  <h2>武蔵野病院 → 高円寺駅北口（NAVITIME）</h2>
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_byoin_to_koenji.html"></iframe>
+
+  <h2>武蔵野病院 → 高円寺駅北口（関東バス）</h2>
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/kantobus_byoin_to_koenji.html"></iframe>
 
   <h2>武蔵野病院 → 新宿駅西口(高円寺)</h2>
   <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_byoin_to_shinjuku.html"></iframe>
@@ -199,16 +193,22 @@ loadUpdateTime();
 <div class="group-down">
   <div class="group-title">帰り（下り）</div>
 
-  <h3>野方二丁目 → 赤羽駅東口(武蔵野病院 / 小茂根)</h3>
+  <h3>野方二丁目 → 小茂根（NAVITIME）</h3>
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_nogata_to_komone.html"></iframe>
 
-  <h3>野方二丁目 → 王子駅(武蔵野病院 / 小茂根)</h3>
+  <h3>野方二丁目 → 小茂根（関東バス）</h3>
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/kantobus_nogata_to_komone.html"></iframe>
+
+  <h3>野方二丁目 → 王子駅</h3>
   <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_nogata_to_oji.html"></iframe>
 
-  <h3>高円寺駅北口 → 赤羽駅東口(武蔵野病院 / 小茂根)</h3>
+  <h3>高円寺駅北口 → 小茂根（NAVITIME）</h3>
   <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/aka31_koenji_to_komone.html"></iframe>
 
-  <h3>高円寺駅入口 → 王子駅(武蔵野病院 / 小茂根)</h3>
+  <h3>高円寺駅北口 → 小茂根（関東バス）</h3>
+  <iframe src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/kantobus_koenji_to_komone.html"></iframe>
+
+  <h3>高円寺駅入口 → 王子駅</h3>
   <iframe class="tobus-frame" src="https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/tobus_koenji_to_oji.html"></iframe>
 </div>
 
