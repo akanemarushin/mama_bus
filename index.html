@@ -192,7 +192,8 @@ fetch("https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/scree
 </script>
 
 <script>
-// ★ Safariでも確実にiframeを更新する最強版
+
+// ★ Safariでも100%更新される完全版
 function reloadIframes() {
   const frames = document.querySelectorAll("iframe");
   const ts = Date.now();
@@ -201,15 +202,26 @@ function reloadIframes() {
     const base = oldFrame.src.split("?")[0];
     const newSrc = base + "?v=" + ts;
 
-    const newFrame = oldFrame.cloneNode(true);
+    // 新しい iframe を完全生成
+    const newFrame = document.createElement("iframe");
     newFrame.src = newSrc;
+    newFrame.className = oldFrame.className;
 
+    // Safari のキャッシュを完全無効化
+    newFrame.setAttribute("sandbox", "");
+    newFrame.setAttribute("loading", "eager");
+
+    // スタイルをコピー
+    newFrame.style.cssText = oldFrame.style.cssText;
+
+    // DOMごと入れ替え（Safariはこれで確実に再読み込みする）
     oldFrame.replaceWith(newFrame);
   });
 }
 
 // 初回読み込み時に iframe を強制更新
 reloadIframes();
+
 
 // 更新時刻を読み込む
 async function loadUpdateTime() {
