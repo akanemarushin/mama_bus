@@ -211,7 +211,7 @@ async function loadStatusAndIframes() {
 
 // ボタン押したら再読込（Lambda → S3 更新後の最新を取りに行く）
 document.getElementById("reload-btn").onclick = () => {
-  loadStatusAndIframes();
+  location.reload();
 };
 
 // 初回読み込み
