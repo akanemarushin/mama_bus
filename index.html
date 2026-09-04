@@ -192,14 +192,19 @@ fetch("https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/scree
 </script>
 
 <script>
-// ★ iframe のキャッシュを毎回確実に消す（強制版）
+// ★ Safariでも確実にiframeを更新する最強版
 function reloadIframes() {
   const frames = document.querySelectorAll("iframe");
   const ts = Date.now();
 
-  frames.forEach(f => {
-    const base = f.src.split("?")[0];   // 元のURLだけ取り出す
-    f.src = base + "?v=" + ts;          // 完全に別URLとして再読み込み
+  frames.forEach(oldFrame => {
+    const base = oldFrame.src.split("?")[0];
+    const newSrc = base + "?v=" + ts;
+
+    const newFrame = oldFrame.cloneNode(true);
+    newFrame.src = newSrc;
+
+    oldFrame.replaceWith(newFrame);
   });
 }
 
