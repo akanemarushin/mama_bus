@@ -10,6 +10,11 @@ jobs:
   call-lambda:
     runs-on: ubuntu-latest
     steps:
-      - name: Call API Gateway to trigger Lambda
+      - name: Call API Gateway to trigger Lambda (with retry)
         run: |
-          curl -X GET "https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/screenshot"
+          for i in 1 2 3; do
+            echo "Attempt $i"
+            curl -v -X POST "https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/screenshot" && break
+            echo "Retrying in 5 seconds..."
+            sleep 5
+          done
