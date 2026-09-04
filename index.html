@@ -144,6 +144,21 @@ h3 {
 </header>
 
 <script>
+  // ★ Lambda を叩いて S3 を更新する関数
+async function runLambdaUpdate() {
+  const apiUrl = "https://YOUR_API_GATEWAY_URL/";  // ←ここを差し替え
+
+  try {
+    document.getElementById("update-time").textContent = "更新中…";
+
+    await fetch(apiUrl, { method: "GET" });
+
+    await loadUpdateTime();   // 更新時刻を再取得
+    reloadIframes();          // iframe を再読み込み
+  } catch (e) {
+    document.getElementById("update-time").textContent = "更新失敗";
+  }
+}
 // ★ 更新時刻を読み込む
 async function loadUpdateTime() {
   const url = "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/last_update.json?v=" + Date.now();
