@@ -21,7 +21,7 @@ header {
   padding: 20px 0;
   background: #ffffff;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 header h1 {
@@ -29,6 +29,36 @@ header h1 {
   margin: 0;
   font-weight: 700;
   color: #4a7aff;
+}
+
+/* 出発地ナビ（ページ上部リンク） */
+.origin-nav {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 14px 10px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-bottom: 4px solid #e3e7ff;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.origin-nav a {
+  padding: 10px 18px;
+  background: #4a7aff;
+  color: white;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.origin-nav a:hover {
+  background: #335eea;
+  transform: translateY(-2px);
 }
 
 /* 更新ボタン */
@@ -124,6 +154,15 @@ h2, h3 {
   iframe.kantobus-frame { height: 750px; }
   header h1 { font-size: 26px; }
   #reload-btn { font-size: 20px; padding: 16px 28px; }
+
+  .origin-nav {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .origin-nav a {
+    display: inline-block;
+    margin-bottom: 6px;
+  }
 }
 </style>
 </head>
@@ -137,6 +176,14 @@ h2, h3 {
   <div id="update-time">更新時刻: 読み込み中...</div>
 </header>
 
+<!-- ★ 出発地リンク（ジャンプメニュー） -->
+<nav class="origin-nav">
+  <a href="#komone">小茂根</a>
+  <a href="#byoin">武蔵野病院</a>
+  <a href="#nogata">野方二丁目</a>
+  <a href="#koenji">高円寺駅周辺</a>
+</nav>
+
 <!-- ページ表示時に Lambda を叩いて S3 を更新 -->
 <script>
 fetch("https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/screenshot", {
@@ -145,7 +192,7 @@ fetch("https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/scree
 </script>
 
 <script>
-  // ★ iframe のキャッシュを毎回確実に消す
+// ★ iframe のキャッシュを毎回確実に消す
 function reloadIframes() {
   const frames = document.querySelectorAll("iframe");
   const ts = Date.now();
@@ -159,6 +206,7 @@ function reloadIframes() {
 
 // 初回読み込み時に iframe を強制更新
 reloadIframes();
+
 // 更新時刻を読み込む
 async function loadUpdateTime() {
   const url = "https://bus-screenshot-akane.s3.ap-northeast-1.amazonaws.com/last_update.json?v=" + Date.now();
@@ -180,7 +228,7 @@ loadUpdateTime();
 <!-- ========================= -->
 <!--   出発地①：小茂根       -->
 <!-- ========================= -->
-<div class="origin-block origin-komone">
+<div id="komone" class="origin-block origin-komone">
   <div class="origin-title">出発地：小茂根</div>
 
   <h2>小茂根 → 高円寺駅北口（関東バス）</h2>
@@ -196,7 +244,7 @@ loadUpdateTime();
 <!-- ========================= -->
 <!--   出発地②：武蔵野病院   -->
 <!-- ========================= -->
-<div class="origin-block origin-byoin">
+<div id="byoin" class="origin-block origin-byoin">
   <div class="origin-title">出発地：武蔵野病院</div>
 
   <h2>武蔵野病院 → 高円寺駅北口（国際興業バス）</h2>
@@ -212,7 +260,7 @@ loadUpdateTime();
 <!-- ========================= -->
 <!--   出発地③：野方二丁目   -->
 <!-- ========================= -->
-<div class="origin-block origin-nogata">
+<div id="nogata" class="origin-block origin-nogata">
   <div class="origin-title">出発地：野方二丁目</div>
 
   <h3>野方二丁目 → 赤羽駅東口（関東バス）</h3>
@@ -228,7 +276,7 @@ loadUpdateTime();
 <!-- ========================= -->
 <!--   出発地④：高円寺周辺   -->
 <!-- ========================= -->
-<div class="origin-block origin-koenji">
+<div id="koenji" class="origin-block origin-koenji">
   <div class="origin-title">出発地：高円寺駅周辺</div>
 
   <h3>高円寺駅北口 → 赤羽駅東口 （関東バス）</h3>
