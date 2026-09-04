@@ -184,22 +184,20 @@ function reloadIframes() {
   const frames = document.querySelectorAll("iframe");
   const ts = Date.now();
 
-  frames.forEach(oldFrame => {
-    const base = oldFrame.src.split("?")[0];
+  frames.forEach(frame => {
+    const base = frame.src.split("?")[0];
     const newSrc = base + "?v=" + ts;
 
-    const newFrame = document.createElement("iframe");
-    newFrame.src = newSrc;
-    newFrame.className = oldFrame.className;
+    // Safari の遅延読み込みを抑制する属性
+    frame.setAttribute("loading", "eager");
+    frame.setAttribute("sandbox", "");
+    frame.setAttribute("decoding", "sync");
 
-    newFrame.setAttribute("sandbox", "");
-    newFrame.setAttribute("loading", "eager");
-
-    newFrame.style.cssText = oldFrame.style.cssText;
-
-    oldFrame.replaceWith(newFrame);
+    // ★ iframe を再生成せず、src を直接書き換える（Safariが最速で反映する）
+    frame.src = newSrc;
   });
 }
+
 
 reloadIframes();
 
