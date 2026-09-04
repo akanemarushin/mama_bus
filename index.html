@@ -192,20 +192,21 @@ fetch("https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/scree
 </script>
 
 <script>
-// ★ iframe のキャッシュを毎回確実に消す
+// ★ iframe のキャッシュを毎回確実に消す（強制版）
 function reloadIframes() {
   const frames = document.querySelectorAll("iframe");
   const ts = Date.now();
 
   frames.forEach(f => {
-    const url = new URL(f.src);
-    url.searchParams.set("v", ts);
-    f.src = url.toString();
+    const base = f.src.split("?")[0];   // 元のURLだけ取り出す
+    f.src = base + "?v=" + ts;          // 完全に別URLとして再読み込み
   });
 }
 
 // 初回読み込み時に iframe を強制更新
 reloadIframes();
+</script>
+
 
 // 更新時刻を読み込む
 async function loadUpdateTime() {
