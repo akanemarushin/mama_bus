@@ -80,6 +80,11 @@ header h1 {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  min-height: 800px; /* NAVITIME */
+}
+
+.bus-block.tobus {
+  min-height: 1300px; /* 都バス */
 }
 
 .bus-title {
@@ -107,12 +112,17 @@ header h1 {
 </header>
 
 <script>
-const LAMBDA = "https://hznw6a7oyvz2tz37bia5sdtmqe0wjpys.lambda-url.ap-northeast-1.on.aws/";  // ← Lambda URL をここに入れる
+const LAMBDA = "https://hznw6a7oyvz2tz37bia5sdtmqe0wjpys.lambda-url.ap-northeast-1.on.aws/";
 
 async function load(route, elementId) {
-  const res = await fetch(`${LAMBDA}?route=${route}`);
-  const html = await res.text();
-  document.getElementById(elementId).innerHTML = html;
+  try {
+    const res = await fetch(`${LAMBDA}?route=${route}`);
+    const html = await res.text();
+    document.getElementById(elementId).innerHTML = html;
+  } catch (e) {
+    document.getElementById(elementId).innerHTML =
+      "<div style='font-size:200%;color:red;'>取得できませんでした</div>";
+  }
 }
 
 async function loadAll() {
@@ -132,16 +142,11 @@ async function loadAll() {
 
 document.getElementById("reload-btn").onclick = loadAll;
 
-// 初回読み込み
 loadAll();
 
-// 1分ごとに自動更新
 setInterval(loadAll, 60000);
 </script>
 
-<!-- ========================= -->
-<!--   上り（行き）グループ   -->
-<!-- ========================= -->
 <div class="group-up">
   <div class="group-title">行き（上り）</div>
 
@@ -150,7 +155,7 @@ setInterval(loadAll, 60000);
     <div id="aka31_komone_to_koenji"></div>
   </div>
 
-  <div class="bus-block">
+  <div class="bus-block tobus">
     <div class="bus-title">小茂根 → 新宿駅西口(高円寺)</div>
     <div id="tobus_komone_to_shinjuku"></div>
   </div>
@@ -160,15 +165,12 @@ setInterval(loadAll, 60000);
     <div id="aka31_byoin_to_koenji"></div>
   </div>
 
-  <div class="bus-block">
+  <div class="bus-block tobus">
     <div class="bus-title">武蔵野病院 → 新宿駅西口(高円寺)</div>
     <div id="tobus_byoin_to_shinjuku"></div>
   </div>
 </div>
 
-<!-- ========================= -->
-<!--   下り（帰り）グループ   -->
-<!-- ========================= -->
 <div class="group-down">
   <div class="group-title">帰り（下り）</div>
 
@@ -177,7 +179,7 @@ setInterval(loadAll, 60000);
     <div id="aka31_nogata_to_komone"></div>
   </div>
 
-  <div class="bus-block">
+  <div class="bus-block tobus">
     <div class="bus-title-orange">野方二丁目 → 王子駅</div>
     <div id="tobus_nogata_to_oji"></div>
   </div>
@@ -187,7 +189,7 @@ setInterval(loadAll, 60000);
     <div id="aka31_koenji_to_komone"></div>
   </div>
 
-  <div class="bus-block">
+  <div class="bus-block tobus">
     <div class="bus-title-orange">高円寺駅入口 → 王子駅</div>
     <div id="tobus_koenji_to_oji"></div>
   </div>
