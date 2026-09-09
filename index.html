@@ -173,9 +173,13 @@ margin-bottom: 6px;
 </nav>
 
 <script>
-fetch("https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/screenshot", {
-method: "POST"
+await fetch("https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/screenshot", {
+  method: "POST"
 });
+
+// Lambda の PUT 完了後に iframe を読み込む
+loadStatusAndIframes();
+
 </script>
 
 <script>
