@@ -286,7 +286,7 @@ async function init() {
 fetch(LAMBDA_URL, { method: "POST" });
 
 // ② Lambda → S3 → CloudFront の反映を待つ（最重要）
-await new Promise(r => setTimeout(r, 1200));
+await new Promise(r => setTimeout(r, 3000));
 
 // ③ 最新の last_update.json を取得
 const url = CF_BASE + "last_update.json?v=" + Date.now();
