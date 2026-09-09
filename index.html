@@ -33,68 +33,12 @@ body {
   transition: opacity 0.6s ease;
 }
 
-/* パンダの外側（黒い輪郭で白背景でも見える） */
-.panda {
-  width: 160px;
-  height: 160px;
-  background: white;
-  border-radius: 50%;
-  border: 6px solid #333;   /* ← 黒い輪郭を追加 */
-  position: relative;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+/* 絵文字パンダを巨大化してふわふわ */
+.emoji-panda {
+  font-size: 90px;        /* ← 絵文字を大きくする */
   animation: float 2s ease-in-out infinite;
 }
 
-/* 耳（大きくしてパンダ感UP） */
-.ear {
-  width: 60px;
-  height: 60px;
-  background: #333;
-  border-radius: 50%;
-  position: absolute;
-  top: -20px;
-}
-
-.ear.left { left: 0; }
-.ear.right { right: 0; }
-
-/* 顔の白丸（輪郭付き） */
-.face {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-  width: 80px;
-  height: 80px;
-  background: white;
-  border-radius: 50%;
-  border: 4px solid #333;  /* ← 顔にも輪郭 */
-}
-
-/* 目（大きくしてパンダ感UP） */
-.eye {
-  width: 32px;
-  height: 32px;
-  background: #333;
-  border-radius: 50%;
-  position: absolute;
-  top: 20px;
-}
-
-.eye.left { left: 6px; }
-.eye.right { right: 6px; }
-
-/* 口 */
-.mouth {
-  width: 40px;
-  height: 20px;
-  border-bottom: 4px solid #333;
-  border-radius: 0 0 40px 40px;
-  position: absolute;
-  bottom: 14px;
-  left: 20px;
-}
-
-/* 読み込みテキスト */
 .loading-text {
   margin-top: 20px;
   font-size: 22px;
@@ -264,13 +208,7 @@ h2, h3 {
 
 <!-- ゆるかわロードアニメーション -->
 <div id="loading">
-  <div class="panda">
-    <div class="face">
-      <div class="eye left"></div>
-      <div class="eye right"></div>
-      <div class="mouth"></div>
-    </div>
-  </div>
+  <div class="emoji-panda">🐼</div>
   <div class="loading-text">読み込み中…</div>
 </div>
 
