@@ -173,12 +173,6 @@ h2, h3 {
 </nav>
 
 <script>
-fetch("https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/screenshot", {
-  method: "POST"
-});
-</script>
-
-<script>
 const CF_BASE = "https://d2ezfe4tunsmit.cloudfront.net/";
 const LAMBDA_URL = "https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/screenshot";
 
@@ -218,7 +212,6 @@ document.getElementById("reload-btn").onclick = () => {
 
 // 初回読み込み
 init();
-
 </script>
 
 <div id="komone" class="origin-block origin-komone">
