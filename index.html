@@ -205,7 +205,8 @@ async function loadStatusAndIframes() {
     frame.setAttribute("sandbox", "");
     frame.setAttribute("decoding", "sync");
 
-    frame.src = CF_BASE + key;
+    frame.src = `${CF_BASE}${key}?v=${Date.now()}`;
+
   });
 }
 
