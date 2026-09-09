@@ -180,9 +180,14 @@ fetch("https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/scree
 
 <script>
 const CF_BASE = "https://d2ezfe4tunsmit.cloudfront.net/";
+const LAMBDA_URL = "https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/screenshot";
 
-// last_update.json を読んで、更新時刻＋最新ファイル名を反映
-async function loadStatusAndIframes() {
+// 初回ロード：Lambda → last_update.json → iframe描画
+async function init() {
+  // ① Lambda を実行（S3 を最新化）
+  await fetch(LAMBDA_URL, { method: "POST" });
+
+  // ② 最新の last_update.json を取得
   const url = CF_BASE + "last_update.json?v=" + Date.now();
   const res = await fetch(url, { cache: "no-store" });
   const json = await res.json();
@@ -191,33 +196,29 @@ async function loadStatusAndIframes() {
   const ts = new Date(json.timestamp).toLocaleString("ja-JP");
   document.getElementById("update-time").textContent = "バス情報更新時刻: " + ts;
 
-  // latest に base → key が入っている前提
   const latest = json.latest || {};
 
-  // 各 iframe に最新ファイル名を反映
-document.querySelectorAll("iframe[data-base]").forEach(frame => {
-  const base = frame.dataset.base;
-  const key = latest[base];
-  if (!key) return;
+  // ③ iframe を生成してから DOM に追加（Safari / LINE 対策）
+  document.querySelectorAll("iframe[data-base]").forEach(oldFrame => {
+    const base = oldFrame.dataset.base;
+    const key = latest[base];
+    if (!key) return;
 
-  // ★ 先に src を設定する（Safari / LINE のキャッシュ回避）
-  frame.src = `${CF_BASE}${key}?v=${Date.now()}`;
+    const newFrame = oldFrame.cloneNode(false);
+    newFrame.src = `${CF_BASE}${key}?v=${Date.now()}`;
 
-  // ★ 後から属性を付ける（順番が重要）
-  frame.setAttribute("loading", "eager");
-  frame.setAttribute("sandbox", "");
-  frame.setAttribute("decoding", "sync");
-});
-
+    oldFrame.replaceWith(newFrame);
+  });
 }
 
-// ボタン押したら再読込（Lambda → S3 更新後の最新を取りに行く）
+// ボタン押したらページ全体を再読み込み
 document.getElementById("reload-btn").onclick = () => {
   location.reload();
 };
 
 // 初回読み込み
-loadStatusAndIframes();
+init();
+
 </script>
 
 <div id="komone" class="origin-block origin-komone">
