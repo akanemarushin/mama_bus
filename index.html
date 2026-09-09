@@ -83,7 +83,7 @@ header h1 {
   gap: 14px;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 14px 10px;
+  padding: 20px 10px;
   background: #ffffff;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   border-bottom: 4px solid #e3e7ff;
@@ -92,20 +92,43 @@ header h1 {
   z-index: 999;
 }
 
+/* 出発地ボタンを大きくする（reloadボタンと同じサイズ感） */
 .origin-nav a {
-  padding: 10px 18px;
-  background: #4a7aff;
-  color: white;
-  border-radius: 10px;
+  padding: 20px 32px;        /* ← 大きくした */
+  font-size: 24px;           /* ← 大きくした */
   font-weight: 700;
+  border-radius: 14px;
+  color: white;
   text-decoration: none;
   transition: 0.2s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
+/* 出発地ごとの色を反映 */
+.origin-nav a[href="#komone"]  { background: #4a7aff; }
+.origin-nav a[href="#byoin"]   { background: #ff8f5a; }
+.origin-nav a[href="#nogata"]  { background: #8ecf5a; }
+.origin-nav a[href="#koenji"]  { background: #c58eff; }
+
 .origin-nav a:hover {
-  background: #335eea;
   transform: translateY(-2px);
+  filter: brightness(0.9);
 }
+
+/* スマホ対応 */
+@media (max-width: 600px) {
+  .origin-nav {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .origin-nav a {
+    display: inline-block;
+    margin-bottom: 6px;
+    padding: 16px 26px;
+    font-size: 20px;
+  }
+}
+
 
 #reload-btn {
   padding: 28px 42px;
