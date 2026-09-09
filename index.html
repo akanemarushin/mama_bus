@@ -78,49 +78,34 @@ header h1 {
   color: #4a7aff;
 }
 
+/* ナビ全体の余白と雰囲気を少し上品に */
 .origin-nav {
   display: flex;
-  gap: 14px;
+  gap: 18px;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 20px 10px;
+  padding: 22px 10px;
   background: #ffffff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   border-bottom: 4px solid #e3e7ff;
   position: sticky;
   top: 0;
   z-index: 999;
 }
 
-/* 出発地ボタンを大きくする（reloadボタンと同じサイズ感） */
-.origin-nav {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 20px 10px;
-  background: #ffffff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  border-bottom: 4px solid #e3e7ff;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-
-/* 大きい白背景ボタン（出発地カラーはボーダーと文字色に） */
+/* おしゃれな白背景ボタン */
 .origin-nav a {
-  padding: 20px 32px;        /* ← 大きくした */
-  font-size: 24px;           /* ← 大きくした */
+  padding: 20px 34px;
+  font-size: 24px;
   font-weight: 700;
-  border-radius: 14px;
-  background: #ffffff;       /* ← 白背景 */
+  border-radius: 16px;
+  background: #ffffff;
   text-decoration: none;
-  transition: 0.2s;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.10);
-  border: 4px solid transparent; /* ← 色は後で指定 */
+  transition: 0.25s ease;
+  border: 3px solid transparent;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
 }
 
-/* 出発地ごとの色（ボーダー＋文字色） */
+/* 出発地カラー（ボーダー＋文字色） */
 .origin-nav a[href="#komone"]  {
   border-color: #4a7aff;
   color: #4a7aff;
@@ -138,10 +123,24 @@ header h1 {
   color: #c58eff;
 }
 
-/* ホバー時：少し浮く＋背景を薄く色づける */
+/* ホバー時：淡い色のグラデーション＋影強め */
 .origin-nav a:hover {
-  transform: translateY(-2px);
-  background: #f8f8ff;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+/* 出発地ごとにホバー色を変える */
+.origin-nav a[href="#komone"]:hover {
+  background: linear-gradient(135deg, #ffffff, #eef3ff);
+}
+.origin-nav a[href="#byoin"]:hover {
+  background: linear-gradient(135deg, #ffffff, #fff1e8);
+}
+.origin-nav a[href="#nogata"]:hover {
+  background: linear-gradient(135deg, #ffffff, #f0ffe8);
+}
+.origin-nav a[href="#koenji"]:hover {
+  background: linear-gradient(135deg, #ffffff, #f7e8ff);
 }
 
 /* スマホ対応 */
@@ -151,10 +150,9 @@ header h1 {
     white-space: nowrap;
   }
   .origin-nav a {
-    display: inline-block;
-    margin-bottom: 6px;
     padding: 16px 26px;
     font-size: 20px;
+    margin-bottom: 6px;
   }
 }
 
