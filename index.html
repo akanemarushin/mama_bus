@@ -15,6 +15,87 @@ body {
   color: #333;
 }
 
+/* -------------------------
+   ゆるかわロードアニメーション
+------------------------- */
+#loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f5f7ff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  transition: opacity 0.6s ease;
+}
+
+.panda {
+  width: 140px;
+  height: 140px;
+  background: white;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: float 2s ease-in-out infinite;
+}
+
+.face {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  width: 84px;
+  height: 84px;
+}
+
+.eye {
+  width: 26px;
+  height: 26px;
+  background: #333;
+  border-radius: 50%;
+  position: absolute;
+  top: 20px;
+}
+
+.eye.left { left: 0; }
+.eye.right { right: 0; }
+
+.mouth {
+  width: 40px;
+  height: 20px;
+  border-bottom: 4px solid #333;
+  border-radius: 0 0 40px 40px;
+  position: absolute;
+  bottom: 10px;
+  left: 22px;
+}
+
+.loading-text {
+  margin-top: 20px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #4a7aff;
+  animation: blink 1.4s infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* -------------------------
+   既存デザイン
+------------------------- */
+
 header {
   text-align: center;
   padding: 20px 0;
@@ -158,6 +239,18 @@ h2, h3 {
 
 <body>
 
+<!-- ゆるかわロードアニメーション -->
+<div id="loading">
+  <div class="panda">
+    <div class="face">
+      <div class="eye left"></div>
+      <div class="eye right"></div>
+      <div class="mouth"></div>
+    </div>
+  </div>
+  <div class="loading-text">読み込み中…</div>
+</div>
+
 <header>
   <h1>🚌あかねバスモニター🚌</h1>
   <h1>⚠ページの自動更新は休止しています⚠</h1>
@@ -203,6 +296,11 @@ async function init() {
 
     frame.src = `${CF_BASE}${key}?v=${Date.now()}`;
   });
+
+  // ⑤ ロードアニメーションをフェードアウト
+  const loader = document.getElementById("loading");
+  loader.style.opacity = "0";
+  setTimeout(() => loader.style.display = "none", 600);
 }
 
 // ボタン押したらページ全体を再読み込み
@@ -214,6 +312,7 @@ document.getElementById("reload-btn").onclick = () => {
 init();
 </script>
 
+<!-- 以下、既存の iframe ブロック -->
 <div id="komone" class="origin-block origin-komone">
   <div class="origin-title">出発地：小茂根</div>
 
