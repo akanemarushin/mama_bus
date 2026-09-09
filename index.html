@@ -93,26 +93,55 @@ header h1 {
 }
 
 /* 出発地ボタンを大きくする（reloadボタンと同じサイズ感） */
+.origin-nav {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px 10px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-bottom: 4px solid #e3e7ff;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+/* 大きい白背景ボタン（出発地カラーはボーダーと文字色に） */
 .origin-nav a {
   padding: 20px 32px;        /* ← 大きくした */
   font-size: 24px;           /* ← 大きくした */
   font-weight: 700;
   border-radius: 14px;
-  color: white;
+  background: #ffffff;       /* ← 白背景 */
   text-decoration: none;
   transition: 0.2s;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.10);
+  border: 4px solid transparent; /* ← 色は後で指定 */
 }
 
-/* 出発地ごとの色を反映 */
-.origin-nav a[href="#komone"]  { background: #4a7aff; }
-.origin-nav a[href="#byoin"]   { background: #ff8f5a; }
-.origin-nav a[href="#nogata"]  { background: #8ecf5a; }
-.origin-nav a[href="#koenji"]  { background: #c58eff; }
+/* 出発地ごとの色（ボーダー＋文字色） */
+.origin-nav a[href="#komone"]  {
+  border-color: #4a7aff;
+  color: #4a7aff;
+}
+.origin-nav a[href="#byoin"]   {
+  border-color: #ff8f5a;
+  color: #ff8f5a;
+}
+.origin-nav a[href="#nogata"]  {
+  border-color: #8ecf5a;
+  color: #8ecf5a;
+}
+.origin-nav a[href="#koenji"]  {
+  border-color: #c58eff;
+  color: #c58eff;
+}
 
+/* ホバー時：少し浮く＋背景を薄く色づける */
 .origin-nav a:hover {
   transform: translateY(-2px);
-  filter: brightness(0.9);
+  background: #f8f8ff;
 }
 
 /* スマホ対応 */
