@@ -195,19 +195,20 @@ async function loadStatusAndIframes() {
   const latest = json.latest || {};
 
   // 各 iframe に最新ファイル名を反映
-  document.querySelectorAll("iframe[data-base]").forEach(frame => {
+document.querySelectorAll("iframe[data-base]").forEach(frame => {
   const base = frame.dataset.base;
   const key = latest[base];
   if (!key) return;
 
+  // ★ 先に src を設定する（Safari / LINE のキャッシュ回避）
+  frame.src = `${CF_BASE}${key}?v=${Date.now()}`;
+
+  // ★ 後から属性を付ける（順番が重要）
   frame.setAttribute("loading", "eager");
   frame.setAttribute("sandbox", "");
   frame.setAttribute("decoding", "sync");
+});
 
-  // ★ Safari / LINE 対策：キャッシュバスターを付ける
-  frame.src = `${CF_BASE}${key}?v=${Date.now()}`;
-
-  });
 }
 
 // ボタン押したら再読込（Lambda → S3 更新後の最新を取りに行く）
