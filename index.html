@@ -316,8 +316,11 @@ setTimeout(() => loader.style.display = "none", 600);
 
 // ボタン押したらページ全体を再読み込み
 document.getElementById("reload-btn").onclick = () => {
-location.reload();
+  // ハッシュ（#koenji など）を消してからリロード
+  history.replaceState(null, null, location.pathname);
+  location.reload();
 };
+
 
 // 初回読み込み
 init();
