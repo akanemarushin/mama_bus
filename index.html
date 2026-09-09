@@ -196,16 +196,18 @@ async function loadStatusAndIframes() {
 
   // 各 iframe に最新ファイル名を反映
   document.querySelectorAll("iframe[data-base]").forEach(frame => {
-    const base = frame.dataset.base;
-    const key = latest[base];
-    if (!key) return;
+  const base = frame.dataset.base;
+  const key = latest[base];
+  if (!key) return;
 
-    // Safari 対策属性
-    frame.setAttribute("loading", "eager");
-    frame.setAttribute("sandbox", "");
-    frame.setAttribute("decoding", "sync");
+  frame.setAttribute("loading", "eager");
+  frame.setAttribute("sandbox", "");
+  frame.setAttribute("decoding", "sync");
 
-    frame.src = `${CF_BASE}${key}?v=${Date.now()}`;
+  // ★ Safari / LINE 対策：キャッシュバスターを付ける
+  frame.src = `${CF_BASE}${key}?v=${Date.now()}`;
+});
+
 
   });
 }
