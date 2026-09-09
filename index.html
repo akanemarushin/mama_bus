@@ -7,182 +7,202 @@
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-/* ゆるかわポップ全体の雰囲気 */
 body {
-  background: linear-gradient(180deg, #fefefe 0%, #f5f9ff 100%);
-  color: #444;
+font-family: "M PLUS Rounded 1c", sans-serif;
+background: #f5f7ff;
+margin: 0;
+padding: 0;
+color: #333;
 }
-  
+
 /* -------------------------
-   ゆるかわロードアニメーション
+  ゆるかわロードアニメーション
 ------------------------- */
 #loading {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #f5f7ff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 99999;
-  transition: opacity 0.6s ease;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: #f5f7ff;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+z-index: 99999;
+transition: opacity 0.6s ease;
 }
 
 /* 絵文字パンダを巨大化してふわふわ */
 .emoji-panda {
-  font-size: 90px;        /* ← 絵文字を大きくする */
-  animation: float 2s ease-in-out infinite;
+font-size: 90px;        /* ← 絵文字を大きくする */
+animation: float 2s ease-in-out infinite;
 }
 
 .loading-text {
-  margin-top: 20px;
-  font-size: 40px;
-  font-weight: 700;
-  color: #4a7aff;
-  animation: blink 1.4s infinite;
+margin-top: 20px;
+font-size: 40px;
+font-weight: 700;
+color: #4a7aff;
+animation: blink 1.4s infinite;
 }
 
 @keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-  100% { transform: translateY(0); }
+0% { transform: translateY(0); }
+50% { transform: translateY(-12px); }
+100% { transform: translateY(0); }
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+0%, 100% { opacity: 1; }
+50% { opacity: 0.4; }
 }
 
 
 /* -------------------------
-   既存デザイン
+  既存デザイン
 ------------------------- */
 
-/* ヘッダーをふんわり */
 header {
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  border-bottom: 6px solid #e3e7ff;
+text-align: center;
+padding: 20px 0;
+background: #ffffff;
+box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+margin-bottom: 0;
 }
+
 header h1 {
-  font-size: 30px;
-  color: #4a7aff;
-  letter-spacing: 1px;
+font-size: 32px;
+margin: 0;
+font-weight: 700;
+color: #4a7aff;
 }
 
-/* 出発地ボタン（横スクロール対応） */
+/* ナビ全体の余白と雰囲気を少し上品に */
 .origin-nav {
-  display: flex;
-  gap: 14px;
-  justify-content: flex-start;
-  overflow-x: auto;
-  padding: 18px 10px;
-  background: #ffffff;
-  border-bottom: 4px solid #e3e7ff;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+display: flex;
+gap: 18px;
+justify-content: center;
+flex-wrap: wrap;
+padding: 22px 10px;
+background: #ffffff;
+border-bottom: 4px solid #e3e7ff;
+position: sticky;
+top: 0;
+z-index: 999;
 }
 
+/* おしゃれな白背景ボタン */
 .origin-nav a {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 14px 22px;
-  font-size: 22px;
-  font-weight: 700;
-  border-radius: 20px;
-  background: #ffffff;
-  text-decoration: none;
-  transition: 0.25s ease;
-  border: 3px solid transparent;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+padding: 20px 34px;
+font-size: 24px;
+font-weight: 700;
+border-radius: 16px;
+background: #ffffff;
+text-decoration: none;
+transition: 0.25s ease;
+border: 3px solid transparent;
+box-shadow: 0 3px 8px rgba(0,0,0,0.08);
 }
 
-/* 出発地カラー＋アイコン風 */
-.origin-nav a[href="#komone"] {
-  border-color: #7aa8ff;
-  color: #4a7aff;
-  background: #eef5ff;
+/* 出発地カラー（ボーダー＋文字色） */
+.origin-nav a[href="#komone"]  {
+border-color: #4a7aff;
+color: #4a7aff;
 }
-.origin-nav a[href="#byoin"] {
-  border-color: #ffb07a;
-  color: #ff8f5a;
-  background: #fff4ec;
+.origin-nav a[href="#byoin"]   {
+border-color: #ff8f5a;
+color: #ff8f5a;
 }
-.origin-nav a[href="#nogata"] {
-  border-color: #a8e57a;
-  color: #8ecf5a;
-  background: #f5fff0;
+.origin-nav a[href="#nogata"]  {
+border-color: #8ecf5a;
+color: #8ecf5a;
 }
-.origin-nav a[href="#koenji"] {
-  border-color: #d6a8ff;
-  color: #c58eff;
-  background: #faf3ff;
+.origin-nav a[href="#koenji"]  {
+border-color: #c58eff;
+color: #c58eff;
 }
 
-/* ホバー時ふわっと */
+/* ホバー時：淡い色のグラデーション＋影強め */
 .origin-nav a:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-  filter: brightness(1.05);
+transform: translateY(-3px);
+box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+/* 出発地ごとにホバー色を変える */
+.origin-nav a[href="#komone"]:hover {
+background: linear-gradient(135deg, #ffffff, #eef3ff);
+}
+.origin-nav a[href="#byoin"]:hover {
+background: linear-gradient(135deg, #ffffff, #fff1e8);
+}
+.origin-nav a[href="#nogata"]:hover {
+background: linear-gradient(135deg, #ffffff, #f0ffe8);
+}
+.origin-nav a[href="#koenji"]:hover {
+background: linear-gradient(135deg, #ffffff, #f7e8ff);
 }
 
 /* スマホ対応 */
 @media (max-width: 600px) {
-  .origin-nav {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  .origin-nav a {
-    padding: 16px 26px;
-    font-size: 20px;
-    margin-bottom: 6px;
-  }
+.origin-nav {
+overflow-x: auto;
+white-space: nowrap;
+}
+.origin-nav a {
+padding: 16px 26px;
+font-size: 20px;
+margin-bottom: 6px;
+}
 }
 
 
-/* 更新ボタンをポップに */
 #reload-btn {
-  background: linear-gradient(135deg, #6faaff, #4a7aff);
-  border-radius: 20px;
-  font-size: 26px;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+padding: 28px 42px;
+background: #4a7aff;
+color: white;
+border-radius: 14px;
+cursor: pointer;
+font-size: 30px;
+font-weight: 700;
+border: none;
+margin-top: 15px;
+transition: 0.2s;
+box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 #reload-btn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
+background: #335eea;
+transform: translateY(-2px);
 }
 
 #update-time {
-  font-size: 30px;
-  margin-top: 12px;
-  color: #555;
+font-size: 30px;
+margin-top: 12px;
+color: #555;
 }
 
 .origin-block {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 24px;
-  margin: 28px 20px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-  border-left: 10px solid #a8caff;
+background: #ffffff;
+border-radius: 18px;
+padding: 20px;
+margin: 28px 20px;
+box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+border-left: 14px solid #4a7aff;
 }
 
 .origin-title {
-  font-size: 30px;
-  font-weight: 800;
-  margin-bottom: 18px;
-  padding-left: 6px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+font-size: 30px;
+font-weight: 800;
+margin-bottom: 18px;
+padding-left: 6px;
+display: flex;
+align-items: center;
+gap: 10px;
 }
 
 .origin-title::before {
-  content: "📍";
-  font-size: 32px;
+content: "📍";
+font-size: 32px;
 }
 
 .origin-komone   { border-left-color: #4a7aff; }
@@ -191,45 +211,45 @@ header h1 {
 .origin-koenji   { border-left-color: #c58eff; }
 
 iframe {
-  margin-bottom: 24px;
-  width: 100%;
-  height: 800px;
-  border: none;
-  overflow: hidden;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+margin-bottom: 24px;
+width: 100%;
+height: 800px;
+border: none;
+overflow: hidden;
+border-radius: 14px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 iframe.tobus-frame {
-  height: 1300px;
+height: 1300px;
 }
 
 iframe.kantobus-frame {
-  height: 600px;
+height: 600px;
 }
 
 h2, h3 {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 10px 0 5px 10px;
+font-size: 24px;
+font-weight: 700;
+margin: 10px 0 5px 10px;
 }
 
 @media (max-width: 600px) {
-  .origin-title { font-size: 24px; }
-  iframe { height: 600px; }
-  iframe.tobus-frame { height: 900px; }
-  iframe.kantobus-frame { height: 750px; }
-  header h1 { font-size: 26px; }
-  #reload-btn { font-size: 20px; padding: 16px 28px; }
+.origin-title { font-size: 24px; }
+iframe { height: 600px; }
+iframe.tobus-frame { height: 900px; }
+iframe.kantobus-frame { height: 750px; }
+header h1 { font-size: 26px; }
+#reload-btn { font-size: 20px; padding: 16px 28px; }
 
-  .origin-nav {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  .origin-nav a {
-    display: inline-block;
-    margin-bottom: 6px;
-  }
+.origin-nav {
+overflow-x: auto;
+white-space: nowrap;
+}
+.origin-nav a {
+display: inline-block;
+margin-bottom: 6px;
+}
 }
 </style>
 </head>
@@ -243,17 +263,17 @@ h2, h3 {
 </div>
 
 <header>
-  <h1>🚌🐼あかねバスモニター🐼🚌</h1>
-  <h1>⚠ページの自動更新は休止しています⚠</h1><br>
-  <button id="reload-btn">→　最新情報を表示するボタン　←</button>
-  <div id="update-time">更新時刻: 読み込み中...</div>
+  <h1>🐼🚌🐼 あかねバスモニター 🐼🚌🐼</h1>
+<h1>⚠ページの自動更新は休止しています⚠</h1><br>
+<button id="reload-btn">→　最新情報を表示するボタン　←</button>
+<div id="update-time">更新時刻: 読み込み中...</div>
 </header>
 
 <nav class="origin-nav">
-  <a href="#komone">小茂根</a>
-  <a href="#byoin">武蔵野病院</a>
-  <a href="#nogata">野方二丁目</a>
-  <a href="#koenji">高円寺駅周辺</a>
+<a href="#komone">小茂根</a>
+<a href="#byoin">武蔵野病院</a>
+<a href="#nogata">野方二丁目</a>
+<a href="#koenji">高円寺駅周辺</a>
 </nav>
 
 <script>
@@ -262,41 +282,41 @@ const LAMBDA_URL = "https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/
 
 // Lambda → S3 → CloudFront の反映を待ってから iframe を更新する
 async function init() {
-  // ① Lambda を投げる（CORS でレスポンスは返らないが実行される）
-  fetch(LAMBDA_URL, { method: "POST" });
+// ① Lambda を投げる（CORS でレスポンスは返らないが実行される）
+fetch(LAMBDA_URL, { method: "POST" });
 
-  // ② Lambda → S3 → CloudFront の反映を待つ（最重要）
-  await new Promise(r => setTimeout(r, 1200));
+// ② Lambda → S3 → CloudFront の反映を待つ（最重要）
+await new Promise(r => setTimeout(r, 1200));
 
-  // ③ 最新の last_update.json を取得
-  const url = CF_BASE + "last_update.json?v=" + Date.now();
-  const res = await fetch(url, { cache: "no-store" });
-  const json = await res.json();
+// ③ 最新の last_update.json を取得
+const url = CF_BASE + "last_update.json?v=" + Date.now();
+const res = await fetch(url, { cache: "no-store" });
+const json = await res.json();
 
-  // 更新時刻表示
-  const ts = new Date(json.timestamp).toLocaleString("ja-JP");
-  document.getElementById("update-time").textContent = "バス情報更新時刻: " + ts;
+// 更新時刻表示
+const ts = new Date(json.timestamp).toLocaleString("ja-JP");
+document.getElementById("update-time").textContent = "バス情報更新時刻: " + ts;
 
-  const latest = json.latest || {};
+const latest = json.latest || {};
 
-  // ④ iframe を最新に更新（キャッシュバスター付き）
-  document.querySelectorAll("iframe[data-base]").forEach(frame => {
-    const base = frame.dataset.base;
-    const key = latest[base];
-    if (!key) return;
+// ④ iframe を最新に更新（キャッシュバスター付き）
+document.querySelectorAll("iframe[data-base]").forEach(frame => {
+const base = frame.dataset.base;
+const key = latest[base];
+if (!key) return;
 
-    frame.src = `${CF_BASE}${key}?v=${Date.now()}`;
-  });
+frame.src = `${CF_BASE}${key}?v=${Date.now()}`;
+});
 
-  // ⑤ ロードアニメーションをフェードアウト
-  const loader = document.getElementById("loading");
-  loader.style.opacity = "0";
-  setTimeout(() => loader.style.display = "none", 600);
+// ⑤ ロードアニメーションをフェードアウト
+const loader = document.getElementById("loading");
+loader.style.opacity = "0";
+setTimeout(() => loader.style.display = "none", 600);
 }
 
 // ボタン押したらページ全体を再読み込み
 document.getElementById("reload-btn").onclick = () => {
-  location.reload();
+location.reload();
 };
 
 // 初回読み込み
@@ -305,55 +325,55 @@ init();
 
 <!-- 以下、既存の iframe ブロック -->
 <div id="komone" class="origin-block origin-komone">
-  <div class="origin-title">出発地：小茂根</div>
+<div class="origin-title">出発地：小茂根</div>
 
-  <h2>小茂根 → 高円寺駅北口（関東バス）</h2>
-  <iframe class="kantobus-frame" data-base="kantobus_komone_to_koenji"></iframe>
+<h2>小茂根 → 高円寺駅北口（関東バス）</h2>
+<iframe class="kantobus-frame" data-base="kantobus_komone_to_koenji"></iframe>
 
-  <h2>小茂根 → 高円寺駅北口（国際興業バス）</h2>
-  <iframe data-base="aka31_komone_to_koenji"></iframe>
+<h2>小茂根 → 高円寺駅北口（国際興業バス）</h2>
+<iframe data-base="aka31_komone_to_koenji"></iframe>
 
-  <h2>小茂根 → 新宿駅西口（都バス）</h2>
-  <iframe class="tobus-frame" data-base="tobus_komone_to_shinjuku"></iframe>
+<h2>小茂根 → 新宿駅西口（都バス）</h2>
+<iframe class="tobus-frame" data-base="tobus_komone_to_shinjuku"></iframe>
 </div>
 
 <div id="byoin" class="origin-block origin-byoin">
-  <div class="origin-title">出発地：武蔵野病院</div>
-  
-  <h2>武蔵野病院 → 高円寺駅北口（関東バス）</h2>
-  <iframe class="kantobus-frame" data-base="kantobus_byoin_to_koenji"></iframe>
-  
-  <h2>武蔵野病院 → 高円寺駅北口（国際興業バス）</h2>
-  <iframe data-base="aka31_byoin_to_koenji"></iframe>
+<div class="origin-title">出発地：武蔵野病院</div>
 
-  <h2>武蔵野病院 → 新宿駅西口（都バス）</h2>
-  <iframe class="tobus-frame" data-base="tobus_byoin_to_shinjuku"></iframe>
+<h2>武蔵野病院 → 高円寺駅北口（関東バス）</h2>
+<iframe class="kantobus-frame" data-base="kantobus_byoin_to_koenji"></iframe>
+
+<h2>武蔵野病院 → 高円寺駅北口（国際興業バス）</h2>
+<iframe data-base="aka31_byoin_to_koenji"></iframe>
+
+<h2>武蔵野病院 → 新宿駅西口（都バス）</h2>
+<iframe class="tobus-frame" data-base="tobus_byoin_to_shinjuku"></iframe>
 </div>
 
 <div id="nogata" class="origin-block origin-nogata">
-  <div class="origin-title">出発地：野方二丁目</div>
+<div class="origin-title">出発地：野方二丁目</div>
 
-  <h3>野方二丁目 → 赤羽駅東口（関東バス）</h3>
-  <iframe class="kantobus-frame" data-base="kantobus_nogata_to_komone"></iframe>
+<h3>野方二丁目 → 赤羽駅東口（関東バス）</h3>
+<iframe class="kantobus-frame" data-base="kantobus_nogata_to_komone"></iframe>
 
-  <h3>野方二丁目 → 赤羽駅東口（国際興業バス）</h3>
-  <iframe data-base="aka31_nogata_to_komone"></iframe>
+<h3>野方二丁目 → 赤羽駅東口（国際興業バス）</h3>
+<iframe data-base="aka31_nogata_to_komone"></iframe>
 
-  <h3>野方二丁目 → 王子駅（都バス）</h3>
-  <iframe class="tobus-frame" data-base="tobus_nogata_to_oji"></iframe>
+<h3>野方二丁目 → 王子駅（都バス）</h3>
+<iframe class="tobus-frame" data-base="tobus_nogata_to_oji"></iframe>
 </div>
 
 <div id="koenji" class="origin-block origin-koenji">
-  <div class="origin-title">出発地：高円寺駅周辺</div>
+<div class="origin-title">出発地：高円寺駅周辺</div>
 
-  <h3>高円寺駅北口 → 赤羽駅東口 （関東バス）</h3>
-  <iframe class="kantobus-frame" data-base="kantobus_koenji_to_komone"></iframe>
+<h3>高円寺駅北口 → 赤羽駅東口 （関東バス）</h3>
+<iframe class="kantobus-frame" data-base="kantobus_koenji_to_komone"></iframe>
 
-  <h3>高円寺駅北口 → 赤羽駅東口（国際興業バス）</h3>
-  <iframe data-base="aka31_koenji_to_komone"></iframe>
+<h3>高円寺駅北口 → 赤羽駅東口（国際興業バス）</h3>
+<iframe data-base="aka31_koenji_to_komone"></iframe>
 
-  <h3>高円寺駅入口 → 王子駅（都バス）</h3>
-  <iframe class="tobus-frame" data-base="tobus_koenji_to_oji"></iframe>
+<h3>高円寺駅入口 → 王子駅（都バス）</h3>
+<iframe class="tobus-frame" data-base="tobus_koenji_to_oji"></iframe>
 </div>
 
 </body>
