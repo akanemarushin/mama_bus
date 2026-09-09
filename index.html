@@ -7,14 +7,12 @@
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
+/* ゆるかわポップ全体の雰囲気 */
 body {
-  font-family: "M PLUS Rounded 1c", sans-serif;
-  background: #f5f7ff;
-  margin: 0;
-  padding: 0;
-  color: #333;
+  background: linear-gradient(180deg, #fefefe 0%, #f5f9ff 100%);
+  color: #444;
 }
-
+  
 /* -------------------------
    ゆるかわロードアニメーション
 ------------------------- */
@@ -63,84 +61,72 @@ body {
    既存デザイン
 ------------------------- */
 
+/* ヘッダーをふんわり */
 header {
-  text-align: center;
-  padding: 20px 0;
   background: #ffffff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  margin-bottom: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-bottom: 6px solid #e3e7ff;
 }
-
 header h1 {
-  font-size: 32px;
-  margin: 0;
-  font-weight: 700;
+  font-size: 30px;
   color: #4a7aff;
+  letter-spacing: 1px;
 }
 
-/* ナビ全体の余白と雰囲気を少し上品に */
+/* 出発地ボタン（横スクロール対応） */
 .origin-nav {
   display: flex;
-  gap: 18px;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 22px 10px;
+  gap: 14px;
+  justify-content: flex-start;
+  overflow-x: auto;
+  padding: 18px 10px;
   background: #ffffff;
   border-bottom: 4px solid #e3e7ff;
-  position: sticky;
-  top: 0;
-  z-index: 999;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
 }
 
-/* おしゃれな白背景ボタン */
 .origin-nav a {
-  padding: 20px 34px;
-  font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 22px;
+  font-size: 22px;
   font-weight: 700;
-  border-radius: 16px;
+  border-radius: 20px;
   background: #ffffff;
   text-decoration: none;
   transition: 0.25s ease;
   border: 3px solid transparent;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-/* 出発地カラー（ボーダー＋文字色） */
-.origin-nav a[href="#komone"]  {
-  border-color: #4a7aff;
+/* 出発地カラー＋アイコン風 */
+.origin-nav a[href="#komone"] {
+  border-color: #7aa8ff;
   color: #4a7aff;
+  background: #eef5ff;
 }
-.origin-nav a[href="#byoin"]   {
-  border-color: #ff8f5a;
+.origin-nav a[href="#byoin"] {
+  border-color: #ffb07a;
   color: #ff8f5a;
+  background: #fff4ec;
 }
-.origin-nav a[href="#nogata"]  {
-  border-color: #8ecf5a;
+.origin-nav a[href="#nogata"] {
+  border-color: #a8e57a;
   color: #8ecf5a;
+  background: #f5fff0;
 }
-.origin-nav a[href="#koenji"]  {
-  border-color: #c58eff;
+.origin-nav a[href="#koenji"] {
+  border-color: #d6a8ff;
   color: #c58eff;
+  background: #faf3ff;
 }
 
-/* ホバー時：淡い色のグラデーション＋影強め */
+/* ホバー時ふわっと */
 .origin-nav a:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-}
-
-/* 出発地ごとにホバー色を変える */
-.origin-nav a[href="#komone"]:hover {
-  background: linear-gradient(135deg, #ffffff, #eef3ff);
-}
-.origin-nav a[href="#byoin"]:hover {
-  background: linear-gradient(135deg, #ffffff, #fff1e8);
-}
-.origin-nav a[href="#nogata"]:hover {
-  background: linear-gradient(135deg, #ffffff, #f0ffe8);
-}
-.origin-nav a[href="#koenji"]:hover {
-  background: linear-gradient(135deg, #ffffff, #f7e8ff);
+  filter: brightness(1.05);
 }
 
 /* スマホ対応 */
@@ -157,22 +143,16 @@ header h1 {
 }
 
 
+/* 更新ボタンをポップに */
 #reload-btn {
-  padding: 28px 42px;
-  background: #4a7aff;
-  color: white;
-  border-radius: 14px;
-  cursor: pointer;
-  font-size: 30px;
-  font-weight: 700;
-  border: none;
-  margin-top: 15px;
-  transition: 0.2s;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  background: linear-gradient(135deg, #6faaff, #4a7aff);
+  border-radius: 20px;
+  font-size: 26px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
 }
 #reload-btn:hover {
-  background: #335eea;
   transform: translateY(-2px);
+  filter: brightness(1.1);
 }
 
 #update-time {
@@ -183,11 +163,11 @@ header h1 {
 
 .origin-block {
   background: #ffffff;
-  border-radius: 18px;
-  padding: 20px;
+  border-radius: 24px;
+  padding: 24px;
   margin: 28px 20px;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-  border-left: 14px solid #4a7aff;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  border-left: 10px solid #a8caff;
 }
 
 .origin-title {
@@ -258,12 +238,12 @@ h2, h3 {
 
 <!-- ゆるかわロードアニメーション -->
 <div id="loading">
-  <div class="emoji-panda">🚌　🐼　🚌</div>
+  <div class="emoji-panda">🚌🐼🚌</div>
   <div class="loading-text">…ページを表示中…</div>
 </div>
 
 <header>
-  <h1>🚌🐼　あかねバスモニター　🐼🚌</h1>
+  <h1>🚌🐼あかねバスモニター🐼🚌</h1>
   <h1>⚠ページの自動更新は休止しています⚠</h1><br>
   <button id="reload-btn">→　最新情報を表示するボタン　←</button>
   <div id="update-time">更新時刻: 読み込み中...</div>
