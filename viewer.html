@@ -25,9 +25,6 @@
 
 <script>
 (async () => {
-  // URL例:
-  // viewer.html?json=https://cloudfront/komone.json&key=kantobus
-
   const params = new URLSearchParams(location.search);
   const jsonUrl = params.get("json");
   const key = params.get("key");
@@ -39,17 +36,27 @@
   }
 
   try {
-    // JSON を取得
     const res = await fetch(jsonUrl + "?v=" + Date.now(), { cache: "no-store" });
     const data = await res.json();
 
-    // 指定されたキーの HTML を表示
-    if (data[key]) {
-      document.getElementById("content").innerHTML = data[key];
-    } else {
+    let html = data[key];
+
+    if (!html) {
       document.getElementById("content").innerHTML =
         `<p style='color:red;'>指定されたキー「${key}」のデータがありません。</p>`;
+      return;
     }
+
+    // 🔥 ここが重要：<html>〜</html> を除去して中身だけ表示する
+    html = html.replace(/<!DOCTYPE html>/i, "");
+    html = html.replace(/<html[^>]*>/i, "");
+    html = html.replace(/<\/html>/i, "");
+    html = html.replace(/<body[^>]*>/i, "");
+    html = html.replace(/<\/body>/i, "");
+    html = html.replace(/<head[^>]*>[\s\S]*?<\/head>/i, "");
+
+    document.getElementById("content").innerHTML = html;
+
   } catch (e) {
     document.getElementById("content").innerHTML =
       "<p style='color:red;'>JSON の読み込みに失敗しました。</p>";
