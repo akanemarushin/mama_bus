@@ -10,12 +10,26 @@
     margin: 0;
     padding: 20px;
   }
-#content {
-  background: #ffffff;
-  padding: 0;
-  border-radius: 8px;
-  box-shadow: none;
-}
+
+  #content {
+    background: #ffffff;
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+
+  /* ここから追加：路線ごとの文字サイズ調整 */
+  body.kantobus-mode * {
+    font-size: 1.35em !important;
+    line-height: 1.45em !important;
+  }
+
+  body.tobus-mode * {
+    font-size: 1.45em !important;
+    line-height: 1.55em !important;
+  }
+  /* 追加ここまで */
+
 </style>
 </head>
 
@@ -24,12 +38,18 @@
 
 <script>
 (async () => {
-  // URL例:
-  // viewer.html?json=https://cloudfront/komone.json&key=kantobus
-
   const params = new URLSearchParams(location.search);
   const jsonUrl = params.get("json");
   const key = params.get("key");
+
+  /* ここから追加：key に応じて body にクラスを付与 */
+  if (key === "kantobus") {
+    document.body.classList.add("kantobus-mode");
+  }
+  if (key === "tobus") {
+    document.body.classList.add("tobus-mode");
+  }
+  /* 追加ここまで */
 
   if (!jsonUrl || !key) {
     document.getElementById("content").innerHTML =
@@ -38,11 +58,9 @@
   }
 
   try {
-    // JSON を取得
     const res = await fetch(jsonUrl + "?v=" + Date.now(), { cache: "no-store" });
     const data = await res.json();
 
-    // 指定されたキーの HTML を表示
     if (data[key]) {
       document.getElementById("content").innerHTML = data[key];
     } else {
