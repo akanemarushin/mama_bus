@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <title>🚌あかねバスモニター🚌</title>
 
+<!-- iPhone Webアプリ対策：Service Worker を完全無効化 -->
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    regs.forEach(reg => reg.unregister());
+  });
+}
+</script>
+
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -133,7 +142,7 @@ header h1 {
 .origin-koenji   { border-left-color: #c58eff; }
 
 /* ============================
-   iframe（②のデザインを統合）
+   iframe
 ============================ */
 iframe {
   width: 100%;
@@ -145,19 +154,18 @@ iframe {
   background: white;
 }
 
-/* 都バスだけ高さを増やす */
 iframe.tobus-frame {
-  height: 2000px;
+  height: 1800px;
 }
 
 iframe.kantobus-frame {
-height: 800px;
+  height: 600px;
 }
 
-   h2, h3 {
-font-size: 24px;
-font-weight: 700;
-margin: 10px 0 5px 10px;
+h2, h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 10px 0 5px 10px;
 }
 
 /* ============================
@@ -184,7 +192,7 @@ margin: 10px 0 5px 10px;
 
 <header>
   <h1>🐼🚌🐼 あかねバスモニター 🐼🚌🐼</h1>
-
+<h1>↓のボタンを押すと最新の情報が表示されます</h1><br>
   <button id="reload-btn">🔄 最新の情報を表示する 🔄</button>
   <div id="update-time">更新時刻: 読み込み中...</div>
 </header>
@@ -204,11 +212,10 @@ margin: 10px 0 5px 10px;
    
 <h2>小茂根 → 高円寺駅北口（赤31：関東バス）</h2>
   <iframe class="kantobus-frame" src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/komone.json&key=kantobus"></iframe>
-   <h2>小茂根 → 高円寺駅北口（赤31：国際興業バス）</h2>
+<h2>小茂根 → 高円寺駅北口（赤31：国際興業バス）</h2>
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/komone.json&key=aka31"></iframe>
-   <h2>小茂根 → 新宿駅西口（王78：都バス）</h2>
-  <iframe class="tobus-frame"
-        src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/komone.json&key=tobus"></iframe>
+<h2>小茂根 → 新宿駅西口（王78：都バス）</h2>
+  <iframe class="tobus-frame" src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/komone.json&key=tobus"></iframe>
 </div>
 
 <!-- ========================= -->
@@ -217,13 +224,12 @@ margin: 10px 0 5px 10px;
 <div id="byoin" class="origin-block origin-byoin">
   <div class="origin-title">出発地：武蔵野病院</div>
 
-   <h2>武蔵野病院 → 高円寺駅北口（赤31：関東バス）</h2>
+<h2>武蔵野病院 → 高円寺駅北口（赤31：関東バス）</h2>
   <iframe class="kantobus-frame" src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/byoin.json&key=kantobus"></iframe>
-   <h2>武蔵野病院 → 高円寺駅北口（赤31：国際興業バス）</h2>
+<h2>武蔵野病院 → 高円寺駅北口（赤31：国際興業バス）</h2>
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/byoin.json&key=aka31"></iframe>
-   <h2>武蔵野病院 → 新宿駅西口（王78：都バス）</h2>
-  <iframe class="tobus-frame"
-        src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/byoin.json&key=tobus"></iframe>
+<h2>武蔵野病院 → 新宿駅西口（王78：都バス）</h2>
+  <iframe class="tobus-frame" src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/byoin.json&key=tobus"></iframe>
 </div>
 
 <!-- ========================= -->
@@ -232,13 +238,12 @@ margin: 10px 0 5px 10px;
 <div id="nogata" class="origin-block origin-nogata">
   <div class="origin-title">出発地：野方二丁目</div>
 
-   <h3>野方二丁目 → 赤羽駅東口（赤31：関東バス）</h3>
+<h3>野方二丁目 → 赤羽駅東口（赤31：関東バス）</h3>
   <iframe class="kantobus-frame" src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/nogata.json&key=kantobus"></iframe>
-   <h3>野方二丁目 → 赤羽駅東口（赤31：国際興業バス）</h3>
+<h3>野方二丁目 → 赤羽駅東口（赤31：国際興業バス）</h3>
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/nogata.json&key=aka31"></iframe>
-   <h3>野方二丁目 → 王子駅（王78：都バス）</h3>
-  <iframe class="tobus-frame"
-        src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/nogata.json&key=tobus"></iframe>
+<h3>野方二丁目 → 王子駅（王78：都バス）</h3>
+  <iframe class="tobus-frame" src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/nogata.json&key=tobus"></iframe>
 </div>
 
 <!-- ========================= -->
@@ -247,51 +252,48 @@ margin: 10px 0 5px 10px;
 <div id="koenji" class="origin-block origin-koenji">
   <div class="origin-title">出発地：高円寺駅周辺</div>
 
-   <h3>高円寺駅北口 → 赤羽駅東口 （赤31：関東バス）</h3>
+<h3>高円寺駅北口 → 赤羽駅東口 （赤31：関東バス）</h3>
   <iframe class="kantobus-frame" src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/koenji.json&key=kantobus"></iframe>
-   <h3>高円寺駅北口 → 赤羽駅東口（赤31：国際興業バス）</h3>
+<h3>高円寺駅北口 → 赤羽駅東口（赤31：国際興業バス）</h3>
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/koenji.json&key=aka31"></iframe>
-   <h3>高円寺駅入口 → 王子駅（王78：都バス）</h3>
-  <iframe class="tobus-frame"
-        src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/koenji.json&key=tobus"></iframe>
+<h3>高円寺駅入口 → 王子駅（王78：都バス）</h3>
+  <iframe class="tobus-frame" src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/koenji.json&key=tobus"></iframe>
 </div>
 
 <script>
 const LAMBDA_URL = "https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/screenshot";
 const CF_BASE = "https://d2ezfe4tunsmit.cloudfront.net/";
 
-/* Lambda を叩く */
+/* Lambda を叩く（iPhone Webアプリでも確実に動くヘッダ付き） */
 async function runLambda() {
   try {
     await fetch(LAMBDA_URL + "?v=" + Date.now(), {
       method: "GET",
-      cache: "no-store"
+      cache: "no-store",
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0"
+      }
     });
   } catch (e) {
     console.log("Lambda 実行失敗:", e);
   }
 }
 
-/* iframe をリロード */
+/* iframe を破壊して再生成（iPhone Webアプリでも確実に更新される） */
 function reloadFrames() {
   document.querySelectorAll("iframe").forEach(oldFrame => {
-
-    // 元のURLを解析
     const url = new URL(oldFrame.src);
-
-    // キャッシュ破壊パラメータを追加（v + force）
     url.searchParams.set("v", Date.now());
-    url.searchParams.set("force", Math.random());
+    url.searchParams.set("force", Math.random()); // iOS対策
 
-    // iframe を完全に新しく作る
     const newFrame = oldFrame.cloneNode();
     newFrame.src = url.toString();
 
-    // 古い iframe と置き換える
     oldFrame.replaceWith(newFrame);
   });
 }
-
 
 /* 更新時刻を取得 */
 async function updateTimestamp() {
@@ -309,7 +311,7 @@ async function updateTimestamp() {
   }
 }
 
-/* ページを開いたときに Lambda を走らせる */
+/* ページを開いたとき */
 window.addEventListener("load", () => {
   runLambda();
   setTimeout(() => {
@@ -318,8 +320,7 @@ window.addEventListener("load", () => {
   }, 3000);
 });
 
-
-/* リロード時（BFCache対策） */
+/* BFCache / frozen 復帰時 */
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
     runLambda();
@@ -330,24 +331,15 @@ window.addEventListener("pageshow", (event) => {
   }
 });
 
-
-/* ボタン押下時 */
+/* 最新情報ボタン押下時 */
 document.getElementById("reload-btn").onclick = () => {
-
-  // ① ハッシュを消す（#komone など）
   history.replaceState(null, null, location.pathname);
-
-  // ② ページをリロード（ハッシュなしで）
-  location.reload();
-
-  // ③ Lambda を動かす（ページ再読み込み後にも動く）
   runLambda();
   setTimeout(() => {
     reloadFrames();
     updateTimestamp();
   }, 3000);
 };
-
 </script>
 
 </body>
