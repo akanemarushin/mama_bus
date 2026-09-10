@@ -297,20 +297,24 @@ async function updateTimestamp() {
 /* ページを開いたときに Lambda を走らせる */
 window.addEventListener("load", () => {
   runLambda();
-  reloadFrames();
-}, 2000);   // ← 2000ms = 2秒
-  updateTimestamp();
+  setTimeout(() => {
+    reloadFrames();
+    updateTimestamp();
+  }, 2000);
 });
+
 
 /* リロード時（BFCache対策） */
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
     runLambda();
-  reloadFrames();
-}, 2000);   // ← 2000ms = 2秒
-    updateTimestamp();
+    setTimeout(() => {
+      reloadFrames();
+      updateTimestamp();
+    }, 2000);
   }
 });
+
 
 /* ボタン押下時 */
 document.getElementById("reload-btn").onclick = () => {
@@ -323,13 +327,10 @@ document.getElementById("reload-btn").onclick = () => {
 
   // ③ Lambda を動かす（ページ再読み込み後にも動く）
   runLambda();
-
-  // ④ iframe を更新
-  reloadFrames();
-}, 2000);   // ← 2000ms = 2秒
-
-  // ⑤ 更新時刻を表示
-  updateTimestamp();
+  setTimeout(() => {
+    reloadFrames();
+    updateTimestamp();
+  }, 2000);
 };
 
 </script>
