@@ -274,10 +274,21 @@ async function runLambda() {
 
 /* iframe をリロード */
 function reloadFrames() {
-  document.querySelectorAll("iframe").forEach(frame => {
-    const url = new URL(frame.src);
-    url.searchParams.set("v", Date.now());  // 既存の json / key はそのまま、v だけ追加
-    frame.src = url.toString();
+  document.querySelectorAll("iframe").forEach(oldFrame => {
+
+    // 元のURLを解析
+    const url = new URL(oldFrame.src);
+
+    // キャッシュ破壊パラメータを追加（v + force）
+    url.searchParams.set("v", Date.now());
+    url.searchParams.set("force", Math.random());
+
+    // iframe を完全に新しく作る
+    const newFrame = oldFrame.cloneNode();
+    newFrame.src = url.toString();
+
+    // 古い iframe と置き換える
+    oldFrame.replaceWith(newFrame);
   });
 }
 
