@@ -276,23 +276,24 @@ console.log("Lambda 実行失敗:", e);
 
 /* iframe をリロード */
 function reloadFrames() {
-document.querySelectorAll("iframe").forEach(oldFrame => {
+  document.querySelectorAll("iframe").forEach(oldFrame => {
 
-// 元のURLを解析
-const url = new URL(oldFrame.src);
+    // 元のURLを取得
+    const url = new URL(oldFrame.src);
+    url.searchParams.set("v", Date.now());
+    url.searchParams.set("force", Math.random()); // iOS対策
 
-// キャッシュ破壊パラメータを追加（v + force）
-url.searchParams.set("v", Date.now());
-url.searchParams.set("force", Math.random());
+    // 完全に新しい iframe を作る
+    const newFrame = document.createElement("iframe");
+    newFrame.className = oldFrame.className;
+    newFrame.src = url.toString();
+    newFrame.style.cssText = oldFrame.style.cssText;
 
-// iframe を完全に新しく作る
-const newFrame = oldFrame.cloneNode();
-newFrame.src = url.toString();
-
-// 古い iframe と置き換える
-oldFrame.replaceWith(newFrame);
-});
+    // 古い iframe を削除して、新しい iframe を追加
+    oldFrame.parentNode.replaceChild(newFrame, oldFrame);
+  });
 }
+
 
 
 /* 更新時刻を取得 */
@@ -334,21 +335,24 @@ updateTimestamp();
 
 
 /* ボタン押下時 */
-document.getElementById("reload-btn").onclick = () => {
+document.getElementById("reload-btn").onclick = async () => {
 
-// ① ハッシュを消す（#komone など）
-history.replaceState(null, null, location.pathname);
+  // ハッシュを消す
+  history.replaceState(null, null, location.pathname);
 
-// ② ページをリロード（ハッシュなしで）
-location.reload();
+  // Lambda を確実に叩く
+  await runLambda();
 
-// ③ Lambda を動かす（ページ再読み込み後にも動く）
-runLambda();
-setTimeout(() => {
-reloadFrames();
-updateTimestamp();
-}, 3000);
+  // 少し待つ（Lambda → S3 → CloudFront の反映）
+  await new Promise(r => setTimeout(r, 3000));
+
+  // iframe を完全削除 → 新規生成 → append
+  reloadFrames();
+
+  // 更新時刻
+  updateTimestamp();
 };
+
 
 </script>
 
