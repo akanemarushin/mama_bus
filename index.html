@@ -2,55 +2,160 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>バス接近情報ビューア</title>
+<title>🚌あかねバスモニター🚌</title>
 
-<!-- ゆるかわフォント -->
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-  body {
-    font-family: "M PLUS Rounded 1c", sans-serif;
-    background: #f5f7ff;
-    margin: 0;
-    padding: 20px;
-  }
+/* ============================
+   全体ベース
+============================ */
+body {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  background: #f5f7ff;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
 
-  h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
-  }
+/* ============================
+   ヘッダー
+============================ */
+header {
+  text-align: center;
+  padding: 20px 0;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
 
-  h2 {
-    margin-top: 40px;
-    margin-bottom: 10px;
-    font-size: 26px;
-  }
+header h1 {
+  font-size: 32px;
+  margin: 0;
+  font-weight: 700;
+  color: #4a7aff;
+}
 
-  iframe {
-    width: 100%;
-    height: 900px;
-    border: none;
-    border-radius: 16px;
-    margin-bottom: 40px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    background: white;
-  }
+/* ============================
+   ナビ（出発地ボタン）
+============================ */
+.origin-nav {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 22px 10px;
+  background: #ffffff;
+  border-bottom: 4px solid #e3e7ff;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
 
-  .section {
-    margin-bottom: 60px;
+.origin-nav a {
+  padding: 20px 34px;
+  font-size: 24px;
+  font-weight: 700;
+  border-radius: 16px;
+  background: #ffffff;
+  text-decoration: none;
+  transition: 0.25s ease;
+  border: 3px solid transparent;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.origin-nav a[href="#komone"]  { border-color: #4a7aff; color: #4a7aff; }
+.origin-nav a[href="#byoin"]   { border-color: #ff8f5a; color: #ff8f5a; }
+.origin-nav a[href="#nogata"]  { border-color: #8ecf5a; color: #8ecf5a; }
+.origin-nav a[href="#koenji"]  { border-color: #c58eff; color: #c58eff; }
+
+.origin-nav a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+/* ============================
+   出発地カード（origin-block）
+============================ */
+.origin-block {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px;
+  margin: 28px 20px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  border-left: 14px solid #4a7aff;
+}
+
+.origin-title {
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom: 18px;
+  padding-left: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.origin-title::before {
+  content: "📍";
+  font-size: 32px;
+}
+
+.origin-komone   { border-left-color: #4a7aff; }
+.origin-byoin    { border-left-color: #ff8f5a; }
+.origin-nogata   { border-left-color: #8ecf5a; }
+.origin-koenji   { border-left-color: #c58eff; }
+
+/* ============================
+   iframe（②のデザインを統合）
+============================ */
+iframe {
+  width: 100%;
+  height: 900px;
+  border: none;
+  border-radius: 16px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: white;
+}
+
+/* ============================
+   スマホ対応
+============================ */
+@media (max-width: 600px) {
+  .origin-title { font-size: 24px; }
+  iframe { height: 600px; }
+  header h1 { font-size: 26px; }
+
+  .origin-nav {
+    overflow-x: auto;
+    white-space: nowrap;
   }
+  .origin-nav a {
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<h1>バス接近情報ビューア</h1>
+<header>
+  <h1>🐼🚌🐼 あかねバスモニター 🐼🚌🐼</h1>
+</header>
+
+<nav class="origin-nav">
+  <a href="#komone">小茂根</a>
+  <a href="#byoin">武蔵野病院</a>
+  <a href="#nogata">野方二丁目</a>
+  <a href="#koenji">高円寺駅周辺</a>
+</nav>
 
 <!-- ========================= -->
 <!-- 小茂根 -->
 <!-- ========================= -->
-<div class="section">
-  <h2>小茂根 → 各方面</h2>
+<div id="komone" class="origin-block origin-komone">
+  <div class="origin-title">出発地：小茂根</div>
 
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/komone.json&key=kantobus"></iframe>
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/komone.json&key=aka31"></iframe>
@@ -60,8 +165,8 @@
 <!-- ========================= -->
 <!-- 武蔵野病院 -->
 <!-- ========================= -->
-<div class="section">
-  <h2>武蔵野病院 → 各方面</h2>
+<div id="byoin" class="origin-block origin-byoin">
+  <div class="origin-title">出発地：武蔵野病院</div>
 
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/byoin.json&key=kantobus"></iframe>
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/byoin.json&key=aka31"></iframe>
@@ -71,8 +176,8 @@
 <!-- ========================= -->
 <!-- 野方二丁目 -->
 <!-- ========================= -->
-<div class="section">
-  <h2>野方二丁目 → 各方面</h2>
+<div id="nogata" class="origin-block origin-nogata">
+  <div class="origin-title">出発地：野方二丁目</div>
 
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/nogata.json&key=kantobus"></iframe>
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/nogata.json&key=aka31"></iframe>
@@ -82,8 +187,8 @@
 <!-- ========================= -->
 <!-- 高円寺駅 -->
 <!-- ========================= -->
-<div class="section">
-  <h2>高円寺駅 → 各方面</h2>
+<div id="koenji" class="origin-block origin-koenji">
+  <div class="origin-title">出発地：高円寺駅周辺</div>
 
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/koenji.json&key=kantobus"></iframe>
   <iframe src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/koenji.json&key=aka31"></iframe>
