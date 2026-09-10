@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>バスビューア</title>
+</head>
+<body>
+<div id="content">読み込み中...</div>
+
+<script>
+(async () => {
+  // 親ページから ?key=kantobus のように指定される
+  const params = new URLSearchParams(location.search);
+  const key = params.get("key");
+
+  // JSON を取得
+  const res = await fetch(params.get("json"));
+  const data = await res.json();
+
+  // 指定されたキーの HTML を表示
+  document.getElementById("content").innerHTML = data[key];
+})();
+</script>
+
+</body>
+</html>
