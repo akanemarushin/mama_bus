@@ -203,7 +203,7 @@ window.addEventListener("load", () => {
   setTimeout(() => loader.style.display = "none", 600);
 });
 
-// iframe を viewer.html 方式に変換
+// iframe を viewer.html 方式に変換（新方式のみ）
 function setViewerFrames() {
   document.querySelectorAll("iframe[data-base]").forEach(frame => {
     const base = frame.dataset.base;
