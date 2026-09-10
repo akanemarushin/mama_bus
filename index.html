@@ -298,6 +298,7 @@ async function updateTimestamp() {
 window.addEventListener("load", () => {
   runLambda();
   reloadFrames();
+}, 2000);   // ← 2000ms = 2秒
   updateTimestamp();
 });
 
@@ -305,7 +306,8 @@ window.addEventListener("load", () => {
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
     runLambda();
-    reloadFrames();
+  reloadFrames();
+}, 2000);   // ← 2000ms = 2秒
     updateTimestamp();
   }
 });
@@ -324,6 +326,7 @@ document.getElementById("reload-btn").onclick = () => {
 
   // ④ iframe を更新
   reloadFrames();
+}, 2000);   // ← 2000ms = 2秒
 
   // ⑤ 更新時刻を表示
   updateTimestamp();
