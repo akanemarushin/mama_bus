@@ -40,20 +40,25 @@
     const data = await res.json();
 
     let html = data[key];
-
     if (!html) {
       document.getElementById("content").innerHTML =
         `<p style='color:red;'>指定されたキー「${key}」のデータがありません。</p>`;
       return;
     }
 
-    // 🔥 ここが重要：<html>〜</html> を除去して中身だけ表示する
+    // 🔥 JSON のエスケープを解除（最重要）
+    html = html
+      .replace(/\\u003C/g, "<")
+      .replace(/\\u003E/g, ">")
+      .replace(/\\u0026/g, "&");
+
+    // 🔥 <html> や <body> を除去（iframe 内で二重になるため）
     html = html.replace(/<!DOCTYPE html>/i, "");
     html = html.replace(/<html[^>]*>/i, "");
     html = html.replace(/<\/html>/i, "");
+    html = html.replace(/<head[^>]*>[\s\S]*?<\/head>/i, "");
     html = html.replace(/<body[^>]*>/i, "");
     html = html.replace(/<\/body>/i, "");
-    html = html.replace(/<head[^>]*>[\s\S]*?<\/head>/i, "");
 
     document.getElementById("content").innerHTML = html;
 
