@@ -180,7 +180,7 @@ margin-bottom: 6px;
 }
 }
 
-/* ローダー本体（画面1/3サイズ） */
+/* ローダー本体（画面全体を覆う） */
 #loader {
   position: fixed;
   inset: 0;
@@ -192,6 +192,7 @@ margin-bottom: 6px;
   z-index: 999999;
 }
 
+/* GIF＋文字を縦に並べる */
 .loader-inner {
   display: flex;
   flex-direction: column;
@@ -199,19 +200,35 @@ margin-bottom: 6px;
   gap: 12px;
 }
 
+/* GIFサイズ（PC） */
+#loader img {
+  width: 120px;
+  height: auto;
+}
+
+/* スマホでは少し大きく */
+@media (max-width: 600px) {
+  #loader img {
+    width: 160px;
+  }
+}
+
+/* 「表示中」テキスト */
 .loader-text {
-  font-size: 32px;
+  font-size: 50px;
   font-weight: 700;
   color: #4a7aff;
   animation: bounce 0.8s infinite ease-in-out;
 }
 
+/* ぽよんぽよんアニメーション */
 @keyframes bounce {
   0%   { transform: translateY(0); }
   30%  { transform: translateY(-10px); }
   60%  { transform: translateY(0); }
   100% { transform: translateY(0); }
 }
+
 
 
 </style>
