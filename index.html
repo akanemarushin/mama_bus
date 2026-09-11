@@ -183,25 +183,21 @@ margin-bottom: 6px;
   /* ロード画面（中央に小さく） */
 #loader {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
-  width: 100vw;
-  height: 100vh;
+  padding: 20px 30px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+  font-size: 26px;
+  font-weight: 700;
+  color: #4a7aff;
 
   display: none;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(255,255,255,0.75);
-  backdrop-filter: blur(6px);
-
-  font-size: 32px;
-  font-weight: 800;
-  color: #2a5aff;
-
-  z-index: 2147483647; /* ← これが最重要（最大値） */
-  pointer-events: none;
+  z-index: 999999;
 }
 
 
@@ -390,6 +386,6 @@ document.getElementById("reload-btn").onclick = () => {
 
 
 </script>
-<div id="loader">…表示中…</div>
+<div id="loader">🐼…表示中…🐼</div>
 </body>
 </html>
