@@ -179,10 +179,32 @@ display: inline-block;
 margin-bottom: 6px;
 }
 }
+
+  /* ロード画面（中央に小さく） */
+#loader {
+  position: fixed;
+  inset: 0;
+  display: none; /* 初期は非表示 */
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(4px);
+
+  font-size: 26px;
+  font-weight: 700;
+  color: #4a7aff;
+
+  z-index: 999999; /* すべての要素より前面 */
+  pointer-events: none; /* タップを邪魔しない */
+}
+
 </style>
 </head>
 
 <body>
+
+<div id="loader">…表示中…</div>
 
 <header>
 <h1>🐼🚌🐼 あかねバスモニター 🐼🚌🐼</h1>
@@ -259,6 +281,19 @@ src="viewer.html?json=https://d2ezfe4tunsmit.cloudfront.net/koenji.json&key=tobu
 </div>
 
 <script>
+function showLoader() {
+  requestAnimationFrame(() => {
+    document.getElementById("loader").style.display = "flex";
+  });
+}
+
+function hideLoader() {
+  requestAnimationFrame(() => {
+    document.getElementById("loader").style.display = "none";
+  });
+}
+
+  
 const LAMBDA_URL = "https://7kfyx1527c.execute-api.ap-northeast-1.amazonaws.com/default/screenshot";
 const CF_BASE = "https://d2ezfe4tunsmit.cloudfront.net/";
 
@@ -336,16 +371,18 @@ updateTimestamp();
 /* ボタン押下時 */
 document.getElementById("reload-btn").onclick = () => {
 
-// ① ハッシュを消す（#komone など）
-history.replaceState(null, null, location.pathname);
+  showLoader();
 
-// ③ Lambda を動かす（ページ再読み込み後にも動く）
-runLambda();
-setTimeout(() => {
-reloadFrames();
-updateTimestamp();
-}, 3000);
+  history.replaceState(null, null, location.pathname);
+
+  runLambda();
+  setTimeout(() => {
+    reloadFrames();
+    updateTimestamp();
+    hideLoader();
+  }, 3000);
 };
+
 
 </script>
 
