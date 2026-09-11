@@ -349,23 +349,29 @@ document.getElementById("update-time").textContent =
 
 /* ページを開いたときに Lambda を走らせる */
 window.addEventListener("load", () => {
-runLambda();
-setTimeout(() => {
-reloadFrames();
-updateTimestamp();
-}, 3000);
+  showLoader();   // ← 追加
+
+  runLambda();
+  setTimeout(() => {
+    reloadFrames();
+    updateTimestamp();
+    hideLoader();  // ← 追加
+  }, 3000);
 });
 
 
 /* リロード時（BFCache対策） */
 window.addEventListener("pageshow", (event) => {
-if (event.persisted) {
-runLambda();
-setTimeout(() => {
-reloadFrames();
-updateTimestamp();
-}, 3000);
-}
+  if (event.persisted) {
+    showLoader();   // ← 追加
+
+    runLambda();
+    setTimeout(() => {
+      reloadFrames();
+      updateTimestamp();
+      hideLoader();  // ← 追加
+    }, 3000);
+  }
 });
 
 
