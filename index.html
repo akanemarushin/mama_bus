@@ -339,9 +339,6 @@ document.getElementById("reload-btn").onclick = () => {
 // ① ハッシュを消す（#komone など）
 history.replaceState(null, null, location.pathname);
 
-// ② ページをリロード（ハッシュなしで）
-location.reload();
-
 // ③ Lambda を動かす（ページ再読み込み後にも動く）
 runLambda();
 setTimeout(() => {
