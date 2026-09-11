@@ -378,46 +378,60 @@ document.getElementById("update-time").textContent =
 
 /* ページを開いたときに Lambda を走らせる */
 window.addEventListener("load", () => {
-  showLoader();   // ← 追加
+  showLoader();
 
   runLambda();
+
   setTimeout(() => {
     reloadFrames();
-    updateTimestamp();
-    hideLoader();  // ← 追加
   }, 3500);
+
+  setTimeout(() => {
+    updateTimestamp();
+    hideLoader();
+  }, 3700);
 });
+
 
 
 /* リロード時（BFCache対策） */
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
-    showLoader();   // ← 追加
+    showLoader();
 
     runLambda();
+
     setTimeout(() => {
       reloadFrames();
-      updateTimestamp();
-      hideLoader();  // ← 追加
     }, 3500);
+
+    setTimeout(() => {
+      updateTimestamp();
+      hideLoader();
+    }, 3700);
   }
 });
 
 
+
 /* ボタン押下時 */
 document.getElementById("reload-btn").onclick = () => {
-
   showLoader();
 
   history.replaceState(null, null, location.pathname);
 
   runLambda();
+
   setTimeout(() => {
     reloadFrames();
+  }, 3500);
+
+  setTimeout(() => {
     updateTimestamp();
     hideLoader();
-  }, 3500);
+  }, 3700);
 };
+
 
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
