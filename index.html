@@ -184,7 +184,7 @@ margin-bottom: 6px;
 #loader {
   position: fixed;
   inset: 0;
-  display: none; /* 初期は非表示 */
+  display: none;
   align-items: center;
   justify-content: center;
   background: rgba(255,255,255,0.6);
@@ -192,9 +192,25 @@ margin-bottom: 6px;
   z-index: 999999;
 }
 
-#loader img {
-  width: 160px;
-  height: auto;
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.loader-text {
+  font-size: 32px;
+  font-weight: 700;
+  color: #4a7aff;
+  animation: bounce 0.8s infinite ease-in-out;
+}
+
+@keyframes bounce {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-10px); }
+  60%  { transform: translateY(0); }
+  100% { transform: translateY(0); }
 }
 
 
@@ -390,8 +406,12 @@ document.getElementById("reload-btn").onclick = () => {
 </script>
   
 <div id="loader">
-  <img src="./img/panda-loading.gif" alt="loading panda">
+  <div class="loader-inner">
+    <img src="./img/panda-loading.gif" alt="loading panda">
+    <div class="loader-text">…表示中…</div>
+  </div>
 </div>
+
 
 
 </body>
