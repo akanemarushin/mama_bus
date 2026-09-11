@@ -183,57 +183,18 @@ margin-bottom: 6px;
 /* ローダー本体（画面1/3サイズ） */
 #loader {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  width: 33vw;
-  height: 33vh;
-
-  display: none;
+  inset: 0;
+  display: none; /* 初期は非表示 */
   align-items: center;
   justify-content: center;
-
-  background: rgba(255,255,255,0.9);
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-
-  z-index: 2147483647;
-  pointer-events: none;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 999999;
 }
 
-/* パンダ＋文字の縦並び中央配置 */
-#loader-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-/* パンダがくるくる回る */
-#loader-panda {
-  font-size: 64px;
-  animation: spin 1.2s linear infinite;
-}
-
-@keyframes spin {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* 「表示中」がぽよんと跳ねる */
-#loader-text {
-  font-size: 28px;
-  font-weight: 700;
-  color: #4a7aff;
-  animation: bounce 0.8s infinite ease-in-out;
-}
-
-@keyframes bounce {
-  0%   { transform: translateY(0); }
-  30%  { transform: translateY(-10px); }
-  60%  { transform: translateY(0); }
-  100% { transform: translateY(0); }
+#loader img {
+  width: 160px;
+  height: auto;
 }
 
 
@@ -429,11 +390,9 @@ document.getElementById("reload-btn").onclick = () => {
 </script>
   
 <div id="loader">
-  <div id="loader-inner">
-    <div id="loader-panda">🐼</div>
-    <div id="loader-text">表示中</div>
-  </div>
+  <img src="panda-loading.gif" alt="loading panda">
 </div>
+
 
 </body>
 </html>
