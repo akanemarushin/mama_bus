@@ -180,15 +180,15 @@ margin-bottom: 6px;
 }
 }
 
-  /* ロード画面（中央に小さく） */
+/* ローダー本体（画面1/3サイズ） */
 #loader {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: 33vw;   /* 画面の1/3幅 */
-  height: 33vh;  /* 画面の1/3高さ */
+  width: 33vw;
+  height: 33vh;
 
   display: none;
   align-items: center;
@@ -198,23 +198,40 @@ margin-bottom: 6px;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 
-  font-size: 28px;
-  font-weight: 700;
-  color: #4a7aff;
-
   z-index: 2147483647;
   pointer-events: none;
 }
 
-  /* ローダー内の文字を跳ねさせる */
+/* パンダ＋文字の縦並び中央配置 */
+#loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* パンダがくるくる回る */
+#loader-panda {
+  font-size: 64px;
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 「表示中」がぽよんと跳ねる */
 #loader-text {
+  font-size: 28px;
+  font-weight: 700;
+  color: #4a7aff;
   animation: bounce 0.8s infinite ease-in-out;
-  display: inline-block;
 }
 
 @keyframes bounce {
   0%   { transform: translateY(0); }
-  30%  { transform: translateY(-12px); }
+  30%  { transform: translateY(-10px); }
   60%  { transform: translateY(0); }
   100% { transform: translateY(0); }
 }
@@ -410,8 +427,13 @@ document.getElementById("reload-btn").onclick = () => {
 
 
 </script>
+  
 <div id="loader">
-  <span id="loader-text">🐼…表示中…🐼</span>
+  <div id="loader-inner">
+    <div id="loader-panda">🐼</div>
+    <div id="loader-text">表示中</div>
+  </div>
 </div>
+
 </body>
 </html>
