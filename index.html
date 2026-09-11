@@ -187,19 +187,37 @@ margin-bottom: 6px;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  padding: 20px 30px;
+  width: 33vw;   /* 画面の1/3幅 */
+  height: 33vh;  /* 画面の1/3高さ */
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
   background: rgba(255,255,255,0.9);
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
   color: #4a7aff;
 
-  display: none;
-  z-index: 999999;
+  z-index: 2147483647;
+  pointer-events: none;
 }
 
+  /* ローダー内の文字を跳ねさせる */
+#loader-text {
+  animation: bounce 0.8s infinite ease-in-out;
+  display: inline-block;
+}
+
+@keyframes bounce {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-12px); }
+  60%  { transform: translateY(0); }
+  100% { transform: translateY(0); }
+}
 
 
 </style>
@@ -392,6 +410,8 @@ document.getElementById("reload-btn").onclick = () => {
 
 
 </script>
-<div id="loader">🐼…表示中…🐼</div>
+<div id="loader">
+  <span id="loader-text">🐼…表示中…🐼</span>
+</div>
 </body>
 </html>
