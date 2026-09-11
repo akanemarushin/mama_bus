@@ -419,9 +419,23 @@ document.getElementById("reload-btn").onclick = () => {
   }, 3000);
 };
 
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    const url = new URL(location.href);
+    url.searchParams.set("wake", Date.now());
+    location.replace(url.toString());
+  }
+});
 
 </script>
-  
+  document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    const url = new URL(location.href);
+    url.searchParams.set("wake", Date.now());
+    location.replace(url.toString());
+  }
+});
+
 <div id="loader">
   <div class="loader-inner">
     <img src="./img/panda-loading.gif" alt="loading panda">
